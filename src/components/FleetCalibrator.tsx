@@ -8,6 +8,8 @@ const SECRET = "123";
 
 type Props = {
   lanes: Lane[];
+  themeId: string;
+  themeName: string;
   onChange: (lanes: Lane[]) => void;
   onTest: () => void;
 };
@@ -16,7 +18,7 @@ type Grab = { index: number; kind: "dock" | "fish" };
 
 /** Hidden owner tool: tap the invisible corner, enter 123, then drag each ship's
  *  berth and fishing mark. Publishing stores the layout for every player. */
-export function FleetCalibrator({ lanes, onChange, onTest }: Props) {
+export function FleetCalibrator({ lanes, onChange, onTest, themeId, themeName }: Props) {
   const [stage, setStage] = useState<"hidden" | "gate" | "open">("hidden");
   const [code, setCode] = useState("");
   const [wrong, setWrong] = useState(false);
@@ -54,7 +56,7 @@ export function FleetCalibrator({ lanes, onChange, onTest }: Props) {
 
   const publish = async () => {
     setStatus("جاري النشر…");
-    const ok = await publishLanes(lanes);
+    const ok = await publishLanes(themeId, lanes);
     setStatus(ok ? "تم النشر لكل اللاعبين ✔" : "لم يتم النشر، حاول مرة أخرى");
   };
 
@@ -155,7 +157,7 @@ export function FleetCalibrator({ lanes, onChange, onTest }: Props) {
       ))}
 
       <section className="calib-panel">
-        <h3>معايرة الأسطول</h3>
+         <h3>معايرة الأسطول · {themeName}</h3>
         <p className="calib-note">اسحب الدائرة الذهبية لمكان الرسو والزرقاء لمكان الصيد.</p>
         <div className="calib-row">
           {lanes.map((lane, index) => (
@@ -188,7 +190,7 @@ export function FleetCalibrator({ lanes, onChange, onTest }: Props) {
             تجربة الإبحار
           </Button>
           <Button size="sm" onClick={() => void publish()}>
-            حفظ ونشر للجميع
+             حفظ ونشر لهذه الخلفية
           </Button>
           <Button size="sm" variant="secondary" onClick={() => onChange(defaultLanes)}>
             استرجاع الافتراضي

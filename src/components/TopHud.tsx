@@ -1,4 +1,6 @@
 import { CaptainAvatar, nameSeed } from "@/components/GameSprite";
+import { Button } from "@/components/ui/button";
+import { ChevronRight } from "lucide-react";
 
 type Props = {
   name: string;
@@ -13,7 +15,7 @@ type Props = {
   onAvatarClick?: () => void;
 };
 
-/** Premium top bar: captain crest on one side, gold and resources on the other. */
+/** Compact game HUD: a captain command tile and four live resources. */
 export function TopHud({
   name,
   avatar,
@@ -37,19 +39,19 @@ export function TopHud({
   ];
 
   return (
-    <div className="hud-bar" dir="ltr">
-      <button type="button" className="hud-player" onClick={onAvatarClick} aria-label="حساب القبطان">
+    <div className="hud-bar" dir="rtl">
+      <Button type="button" variant="ghost" className="hud-player" onClick={onAvatarClick} aria-label="حساب القبطان" title="حساب القبطان">
         <span className="hud-avatar">
           <CaptainAvatar seed={seed} className="hud-avatar-art" />
-          <span className="hud-lvl">{level}</span>
         </span>
         <span className="hud-id">
           <span className="hud-name">{name}</span>
+          <span className="hud-rank">المستوى {level} <ChevronRight aria-hidden="true" /></span>
           <span className="hud-level">
             <i style={{ width: `${Math.round(progress * 100)}%` }} />
           </span>
         </span>
-      </button>
+      </Button>
 
       <div className="hud-values">
         {values.map((v) => (

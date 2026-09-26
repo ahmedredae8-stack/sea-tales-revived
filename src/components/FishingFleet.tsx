@@ -43,9 +43,9 @@ const atSea: ShipState[] = ["sailingOut", "turning", "casting", "fishing", "haul
 const facingShore: ShipState[] = ["turning", "casting", "fishing", "hauling", "sailingHome"];
 const busyStates: ShipState[] = ["sailingOut", "turning", "casting", "hauling", "sailingHome"];
 
-export function FishingFleet() {
+export function FishingFleet({ themeId, themeName }: { themeId: string; themeName: string }) {
   const [ships, setShips] = useState(initialFleet);
-  const [lanes, setLanes] = useState<Lane[]>(() => cachedLanes());
+  const [lanes, setLanes] = useState<Lane[]>(defaultLanes);
   const [assetsReady, setAssetsReady] = useState(false);
   const [selected, setSelected] = useState<number | null>(null);
   const [crewFor, setCrewFor] = useState<number | null>(null);
@@ -63,14 +63,15 @@ export function FishingFleet() {
     ).then(() => {
       if (active) setAssetsReady(true);
     });
-    void fetchLanes().then((published) => {
+    setLanes(cachedLanes(themeId));
+    void fetchLanes(themeId).then((published) => {
       if (active) setLanes(published);
     });
     return () => {
       active = false;
       timers.current.forEach((timer) => window.clearTimeout(timer));
     };
-  }, []);
+  }, [themeId]);
 
   const update = (id: number, state: ShipState) => {
     setShips((current) => current.map((ship) => (ship.id === id ? { ...ship, state } : ship)));
@@ -183,7 +184,7 @@ export function FishingFleet() {
         );
       })}
 
-      <FleetCalibrator lanes={lanes} onChange={setLanes} onTest={testSail} />
+      <FleetCalibrator lanes={lanes} onChange={setLanes} onTest={testSail} themeId={themeId} themeName={themeName} />
 
       {crewFor !== null && <CrewPanel shipId={crewFor} onClose={() => setCrewFor(null)} />}
       {sellFor !== null && (
