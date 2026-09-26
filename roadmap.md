@@ -1,0 +1,24 @@
+# Roadmap
+- [ ] Restore a fully working game screen after reconnecting the imported backend
+- [ ] Install the seven new dock images and remove the home/duplicate chat controls
+- [ ] Connect the unified store window with worlds, ships, weapons, crews, armor, top-ups, and VIP
+- [ ] Add secure tribe chat and join-request flows
+- [x] Rebuild the shipyard as a three-ship interactive sea scene
+- [x] Run the ship sailing, turning, net-casting, catch, and return sequence over the sea
+- [ ] Fix day/night hydration so the background never jumps on first load
+- [ ] Verify build, phone layouts, interactions, production media, and audio
+- [ ] Polish every fleet window with a cohesive professional game finish
+- [ ] Verify three distinct independent ship paths with smooth, energetic motion
+- [ ] Confirm premium ship artwork remains sharp in every animation state
+- [ ] Regenerate sharper ship art with clean alpha (no white halo around the net)
+- [ ] Replace curved routes with one straight out-and-back lane per ship, never over the island
+- [ ] Mirror the hull (no rotation flip) when turning to face the island and back to the sea
+- [ ] Preload ship frames so no state pops in late
+- [ ] Replace the three floating action icons with bold game-style buttons
+- [ ] Build the full store window: gems, crews, weapons, armor tabs with ship offers
+- [ ] Redraw crew portraits as fierce pirates, not childish art
+
+- [x] Install the four matching transparent premium fishing-ship states
+- [x] Add three interactive ships to the main sea scene
+- [x] Add per-ship sail/return, crew, and sell actions
+- [x] Add a matching partially submerged net state with only the rope and net edge visible
