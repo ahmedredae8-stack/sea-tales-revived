@@ -176,7 +176,7 @@ function Index() {
           aria-label={sound ? "كتم الصوت" : "تشغيل الصوت"}
           className="ctl-btn"
         >
-          <img src={sound ? "/img/sound-on.png" : "/img/sound-off.png"} alt="" className="h-6 w-6 object-contain" />
+          <img src={sound ? "/__l5e/assets-v1/e24c9aca-fd04-4d5a-be7b-20f0b53a804c/sound-on.png" : "/__l5e/assets-v1/8ee818c7-e155-4144-8305-1820d57e279a/sound-off.png"} alt="" className="h-6 w-6 object-contain" />
         </button>
         <span className="phase-chip">
           {phase === "day" ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}

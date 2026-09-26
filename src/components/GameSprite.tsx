@@ -1,17 +1,17 @@
-import armorAtlas from "@/assets/armor-atlas.png";
-import captainsAtlas from "@/assets/captains-atlas.png";
-import crewAtlas from "@/assets/crew-atlas.png";
-import gemsAtlas from "@/assets/gems-atlas.png";
-import weaponsAtlas from "@/assets/weapons-atlas.png";
+import armorAtlas from "@/assets/armor-atlas.png.asset.json";
+import captainsAtlas from "@/assets/captains-atlas.png.asset.json";
+import crewAtlas from "@/assets/crew-atlas.png.asset.json";
+import gemsAtlas from "@/assets/gems-atlas.png.asset.json";
+import weaponsAtlas from "@/assets/weapons-atlas.png.asset.json";
 
 type Atlas = "weapon" | "crew" | "captain" | "armor" | "gem";
 
 const atlasData: Record<Atlas, { src: string; columns: number; rows: number }> = {
-  weapon: { src: weaponsAtlas, columns: 3, rows: 2 },
-  crew: { src: crewAtlas, columns: 3, rows: 3 },
-  captain: { src: captainsAtlas, columns: 3, rows: 2 },
-  armor: { src: armorAtlas, columns: 3, rows: 2 },
-  gem: { src: gemsAtlas, columns: 2, rows: 2 },
+  weapon: { src: weaponsAtlas.url, columns: 3, rows: 2 },
+  crew: { src: crewAtlas.url, columns: 3, rows: 3 },
+  captain: { src: captainsAtlas.url, columns: 3, rows: 2 },
+  armor: { src: armorAtlas.url, columns: 3, rows: 2 },
+  gem: { src: gemsAtlas.url, columns: 2, rows: 2 },
 };
 
 export function GameSprite({ atlas, index, className = "" }: { atlas: Atlas; index: number; className?: string }) {

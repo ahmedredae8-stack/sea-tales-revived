@@ -133,7 +133,7 @@ function ProductPicker({ items }: { items: Product[] }) {
           <Button variant="ghost" size="icon" aria-label="زيادة" onClick={() => setQty((n) => Math.min(99, n + 1))}><Plus /></Button>
         </span>
         <Button className="product-buy buy-confirm" onClick={() => playSfx("click", 0.8)}>
-          <img src={picked.currency === "coin" ? "/img/coin.png" : "/img/gem.png"} alt="" />
+          <img src={picked.currency === "coin" ? "/__l5e/assets-v1/906f37c0-d530-4e50-a3ce-00deaaf40a02/coin.png" : "/__l5e/assets-v1/81b9318d-8399-478f-bd28-abec7665a1a6/gem.png"} alt="" />
           {total === 0 ? "مجاني" : fmt(total)}
         </Button>
       </footer>

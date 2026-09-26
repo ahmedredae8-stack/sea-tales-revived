@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { X } from "lucide-react";
 
-import shipIdle from "@/assets/ships/ship-v2-idle.png";
-import shipCast from "@/assets/ships/ship-v2-cast.png";
-import shipHaul from "@/assets/ships/ship-v2-haul.png";
-import shipSubmerged from "@/assets/ships/ship-v2-submerged.png";
-import actSail from "@/assets/actions/act-sail.png";
-import actCrew from "@/assets/actions/act-crew.png";
-import actSell from "@/assets/actions/act-sell.png";
+import shipIdle from "@/assets/ships/ship-v2-idle.png.asset.json";
+import shipCast from "@/assets/ships/ship-v2-cast.png.asset.json";
+import shipHaul from "@/assets/ships/ship-v2-haul.png.asset.json";
+import shipSubmerged from "@/assets/ships/ship-v2-submerged.png.asset.json";
+import actSail from "@/assets/actions/act-sail.png.asset.json";
+import actCrew from "@/assets/actions/act-crew.png.asset.json";
+import actSell from "@/assets/actions/act-sell.png.asset.json";
 import { GameSprite } from "@/components/GameSprite";
 import { FleetCalibrator } from "@/components/FleetCalibrator";
 import { Button } from "@/components/ui/button";
@@ -31,10 +31,10 @@ const initialFleet: FleetShip[] = [1, 2, 3].map((id) => ({ id, state: "docked" }
 const delays = ["0ms", "240ms", "480ms"];
 
 const shipFrames = [
-  { key: "idle", src: shipIdle },
-  { key: "cast", src: shipCast },
-  { key: "submerged", src: shipSubmerged },
-  { key: "haul", src: shipHaul },
+  { key: "idle", src: shipIdle.url },
+  { key: "cast", src: shipCast.url },
+  { key: "submerged", src: shipSubmerged.url },
+  { key: "haul", src: shipHaul.url },
 ] as const;
 
 /** States where the hull sits at the far end of its lane. */
@@ -140,15 +140,15 @@ export function FishingFleet() {
             {selected === ship.id && !busy && (
               <div className="ship-actions" role="menu" aria-label={`أوامر السفينة ${ship.id}`}>
                 <Button variant="ghost" role="menuitem" className="ship-action" onClick={() => sail(ship)} title={ship.state === "docked" ? "الذهاب للصيد" : "العودة للميناء"}>
-                  <img src={actSail} alt="" />
+                  <img src={actSail.url} alt="" />
                   <span>{ship.state === "docked" ? "صيد" : "رجوع"}</span>
                 </Button>
                 <Button variant="ghost" role="menuitem" className="ship-action" onClick={() => { setSelected(null); setCrewFor(ship.id); playSfx("click", 0.65); }} title="تفقد الطاقم">
-                  <img src={actCrew} alt="" />
+                  <img src={actCrew.url} alt="" />
                   <span>الطاقم</span>
                 </Button>
                 <Button variant="ghost" role="menuitem" className="ship-action" onClick={() => { setSelected(null); setSellFor(ship.id); playSfx("click", 0.65); }} title="بيع السفينة">
-                  <img src={actSell} alt="" />
+                  <img src={actSell.url} alt="" />
                   <span>بيع</span>
                 </Button>
               </div>
@@ -189,7 +189,7 @@ export function FishingFleet() {
       {sellFor !== null && (
         <div className="fleet-modal" role="dialog" aria-modal="true" aria-label="بيع السفينة" onClick={() => setSellFor(null)}>
           <section className="sell-panel" dir="rtl" onClick={(event) => event.stopPropagation()}>
-            <img src={shipIdle} alt="" width={1536} height={1024} />
+            <img src={shipIdle.url} alt="" width={1536} height={1024} />
             <h2>بيع السفينة؟</h2>
             <p>ستحصل على 12,500 عملة ذهبية. سيبقى أسطولك قابلاً للإبحار بالسفن الأخرى.</p>
             <div>

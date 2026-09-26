@@ -1,23 +1,23 @@
 import { Button } from "@/components/ui/button";
-import dockChat from "@/assets/dock/chat.png";
-import dockStats from "@/assets/dock/stats.png";
-import dockBag from "@/assets/dock/bag.png";
-import dockStore from "@/assets/dock/store.png";
-import dockQuests from "@/assets/dock/quests.png";
-import dockBattle from "@/assets/dock/battle.png";
-import dockTribe from "@/assets/dock/tribe.png";
+import dockChat from "@/assets/dock/chat.png.asset.json";
+import dockStats from "@/assets/dock/stats.png.asset.json";
+import dockBag from "@/assets/dock/bag.png.asset.json";
+import dockStore from "@/assets/dock/store.png.asset.json";
+import dockQuests from "@/assets/dock/quests.png.asset.json";
+import dockBattle from "@/assets/dock/battle.png.asset.json";
+import dockTribe from "@/assets/dock/tribe.png.asset.json";
 import { playSfx } from "@/lib/sound";
 
 export type DockAction = "chat" | "stats" | "bag" | "store" | "quests" | "battle" | "tribe";
 
 const items: { id: DockAction; label: string; image: string }[] = [
-  { id: "chat", label: "الدردشة", image: dockChat },
-  { id: "stats", label: "الإحصائيات", image: dockStats },
-  { id: "bag", label: "الحقيبة", image: dockBag },
-  { id: "store", label: "المتجر", image: dockStore },
-  { id: "quests", label: "المهام", image: dockQuests },
-  { id: "battle", label: "المعركة", image: dockBattle },
-  { id: "tribe", label: "القبيلة", image: dockTribe },
+  { id: "chat", label: "الدردشة", image: dockChat.url },
+  { id: "stats", label: "الإحصائيات", image: dockStats.url },
+  { id: "bag", label: "الحقيبة", image: dockBag.url },
+  { id: "store", label: "المتجر", image: dockStore.url },
+  { id: "quests", label: "المهام", image: dockQuests.url },
+  { id: "battle", label: "المعركة", image: dockBattle.url },
+  { id: "tribe", label: "القبيلة", image: dockTribe.url },
 ];
 
 export function BottomDock({ onAction }: { onAction: (action: DockAction) => void }) {

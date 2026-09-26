@@ -58,7 +58,7 @@ export function IntroLoader({ onDone }: { onDone: () => void }) {
       aria-label="جاري تحميل اللعبة"
     >
       <img
-        src="/img/intro.jpg"
+        src="/__l5e/assets-v1/cc4c68c1-f2cf-4ab4-be81-1e34ccc7247e/intro.jpg"
         alt="طاقم القراصنة أمام سفينتهم عند الغروب"
         width={1088}
         height={1920}

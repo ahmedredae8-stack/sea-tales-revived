@@ -30,10 +30,10 @@ export function TopHud({
   const fmt = (n: number) => (n >= 10000 ? `${Math.round(n / 1000)}K` : n.toLocaleString("en-US"));
 
   const values = [
-    { key: "coin", icon: "/img/coin.png", text: fmt(coins), tone: "gold" },
-    { key: "gem", icon: "/img/gem.png", text: fmt(gems), tone: "gem" },
-    { key: "pearl", icon: "/img/fish-pearl.png", text: fmt(pearls), tone: "pearl" },
-    { key: "fish", icon: "/img/fish-tuna.png", text: `${fishFound}/${fishTotal}`, tone: "fish" },
+    { key: "coin", icon: "/__l5e/assets-v1/906f37c0-d530-4e50-a3ce-00deaaf40a02/coin.png", text: fmt(coins), tone: "gold" },
+    { key: "gem", icon: "/__l5e/assets-v1/81b9318d-8399-478f-bd28-abec7665a1a6/gem.png", text: fmt(gems), tone: "gem" },
+    { key: "pearl", icon: "/__l5e/assets-v1/4b0616ca-5528-47ea-8c87-3ea157b6de3e/fish-pearl.png", text: fmt(pearls), tone: "pearl" },
+    { key: "fish", icon: "/__l5e/assets-v1/d40f7c1c-8c7f-47ec-89a0-120eaa992bde/fish-tuna.png", text: `${fishFound}/${fishTotal}`, tone: "fish" },
   ];
 
   return (

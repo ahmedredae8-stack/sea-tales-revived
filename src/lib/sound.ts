@@ -9,18 +9,18 @@
  */
 
 const SFX = {
-  click: "/sfx/click.mp3",
-  hover: "/sfx/hover.mp3",
-  intro: "/sfx/intro.mp3",
+  click: "/__l5e/assets-v1/5454c3b8-e1c2-429d-b107-52f006503366/click.mp3",
+  hover: "/__l5e/assets-v1/37fe0b37-517a-4708-a6b5-087942e6087e/hover.mp3",
+  intro: "/__l5e/assets-v1/be42b49f-376d-44dc-ad81-4d9df07e57bb/intro.mp3",
 } as const;
 
 const AMBIENT = {
-  waves: "/sfx/waves.mp3",
-  night: "/sfx/night.mp3",
-  winter: "/sfx/winter.mp3",
-  wall: "/sfx/wall.mp3",
-  spring: "/sfx/spring.mp3",
-  city: "/sfx/city.mp3",
+  waves: "/__l5e/assets-v1/32dc1517-72e3-4690-98f4-438cbe4a6f72/waves.mp3",
+  night: "/__l5e/assets-v1/e359855e-79d2-46c5-8346-6df939a42269/night.mp3",
+  winter: "/__l5e/assets-v1/4e238a17-440a-43b9-a54a-4f94ff4cca66/winter.mp3",
+  wall: "/__l5e/assets-v1/af90be41-6448-49b4-93b7-fc3a0fcd2306/wall.mp3",
+  spring: "/__l5e/assets-v1/aef2453f-87b6-49d5-ab5a-6f795e994683/spring.mp3",
+  city: "/__l5e/assets-v1/12c9c525-1091-42df-b0ff-54f879f8a8f2/city.mp3",
 } as const;
 
 export type SfxKey = keyof typeof SFX;

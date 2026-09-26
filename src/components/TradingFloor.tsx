@@ -110,7 +110,7 @@ export function TradingFloor({ start = "fish" }: { start?: AssetKind }) {
               setKind("fish");
             }}
           >
-            <img src="/img/pin-fish.png" alt="" />
+            <img src="/__l5e/assets-v1/8375eb41-2ea8-4351-8b7a-448d60539f87/pin-fish.png" alt="" />
             سوق السمك
           </button>
           <button
@@ -121,12 +121,12 @@ export function TradingFloor({ start = "fish" }: { start?: AssetKind }) {
               setKind("ship");
             }}
           >
-            <img src="/img/pin-ship.png" alt="" />
+            <img src="/__l5e/assets-v1/fb9b0fc1-ea0d-4c43-a889-ee8820a084f2/pin-ship.png" alt="" />
             سوق السفن
           </button>
         </div>
         <div className="tf-wallet">
-          <img src="/img/coin.png" alt="" />
+          <img src="/__l5e/assets-v1/906f37c0-d530-4e50-a3ce-00deaaf40a02/coin.png" alt="" />
           <b>{fmtCoins(ledger.coins)}</b>
         </div>
       </header>
