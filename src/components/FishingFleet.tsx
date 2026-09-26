@@ -12,7 +12,7 @@ import { GameSprite } from "@/components/GameSprite";
 import { FleetCalibrator } from "@/components/FleetCalibrator";
 import { Button } from "@/components/ui/button";
 import { CREWS } from "@/lib/items";
-import { cachedLanes, fetchLanes, type Lane } from "@/lib/fleetLayout";
+import { cachedLanes, defaultLanes, fetchLanes, type Lane } from "@/lib/fleetLayout";
 import { fmt } from "@/lib/ships";
 import { playSfx } from "@/lib/sound";
 

@@ -151,6 +151,13 @@
   --gold: oklch(0.83 0.14 85);
   --gold-deep: oklch(0.62 0.13 70);
   --dock-bg: oklch(0.28 0.05 250 / 0.55);
+  --hud-glass: oklch(0.14 0.025 240 / 0.92);
+  --hud-surface: oklch(0.23 0.035 237 / 0.8);
+  --hud-edge: oklch(0.78 0.055 215 / 0.25);
+  --hud-text: oklch(0.97 0.018 200);
+  --hud-subtle: oklch(0.73 0.04 210);
+  --hud-aqua: oklch(0.78 0.12 190);
+  --hud-shadow: oklch(0.04 0.02 240 / 0.5);
 }
 
 @theme inline {
@@ -488,20 +495,21 @@
 .ship-flip { position: absolute; inset: 0; z-index: 2; display: block; transform: rotateY(0deg); transform-origin: 50% 50%; transition: transform 820ms cubic-bezier(0.45, 0, 0.25, 1); will-change: transform; }
 .ship-flip-turned { transform: rotateY(180deg); }
 .ship-bob { position: absolute; inset: 0; display: block; animation: ship-idle 3.6s ease-in-out var(--ship-delay) infinite; will-change: transform; }
-/* Always fully opaque: only one frame is mounted per state, so the hull can
-   never look washed out or ghostly while it sails. */
+/* Four preloaded frames stay mounted, but only the current state is visible. */
 .ship-frame {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: contain;
-  opacity: 1;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
   backface-visibility: hidden;
   filter: drop-shadow(0 8px 6px oklch(0.08 0.04 235 / 0.72));
   user-select: none;
 }
-.ship-frame-active { opacity: 1; }
+.ship-frame-active { opacity: 1; visibility: visible; pointer-events: auto; }
 .ship-water-shadow { position: absolute; z-index: 1; left: 14%; right: 8%; bottom: 19%; height: 12%; border-radius: 50%; background: oklch(0.16 0.07 225 / 0.52); filter: blur(5px); transition: opacity 360ms ease, scale 500ms ease; }
 .fishing-ripple { position: absolute; z-index: 1; left: 0; bottom: 13%; width: 35%; height: 16%; border: 2px solid oklch(0.9 0.08 210 / 0.62); border-radius: 50%; animation: net-ripple 1.8s ease-out infinite; }
 .fleet-ship-moving .ship-bob { animation-duration: 1.5s; }
@@ -1347,150 +1355,134 @@
 .tf-log { margin-top: 0.6rem; border-top: 1px solid oklch(1 0 0 / 0.08); padding-top: 0.4rem; }
 .tf-log p { margin: 0; font-size: 0.72rem; opacity: 0.8; display: flex; gap: 0.35rem; }
 
-/* ── Premium top bar ─────────────────────────────────────── */
-/* ── Carved captain's HUD: wooden plank, gold rivets, full data ── */
+/* ── Captain command HUD ─────────────────────────────────── */
 .hud-bar {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: 174px minmax(0, 1fr);
   align-items: center;
-  gap: clamp(0.3rem, 2cqw, 0.75rem);
+  gap: 8px;
   width: 100%;
-  padding: clamp(0.3rem, 1.6cqw, 0.55rem) clamp(0.4rem, 2cqw, 0.8rem);
-  border: 2px solid var(--gold-deep);
-  border-radius: 0.85rem;
-  background:
-    linear-gradient(180deg, oklch(1 0 0 / 0.1), transparent 45%),
-    repeating-linear-gradient(90deg, oklch(0.3 0.075 55), oklch(0.3 0.075 55) 1.6rem, oklch(0.26 0.065 50) 1.65rem, oklch(0.26 0.065 50) 1.72rem);
-  box-shadow:
-    inset 0 0 0 2px oklch(0.88 0.13 85 / 0.32),
-    0 6px 0 oklch(0.17 0.04 45 / 0.75),
-    0 14px 30px oklch(0 0 0 / 0.55);
+  height: 72px;
+  padding: 7px;
+  border: 1px solid var(--hud-edge);
+  border-top: 2px solid var(--hud-aqua);
+  border-radius: 6px;
+  background: var(--hud-glass);
+  box-shadow: 0 12px 30px var(--hud-shadow), inset 0 1px 0 var(--hud-edge);
+  backdrop-filter: blur(18px);
 }
 
 .hud-player {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  justify-content: flex-start;
+  gap: 9px;
   min-width: 0;
-  padding-inline-end: 0.35rem;
-  border-inline-end: 2px solid oklch(0.88 0.13 85 / 0.28);
+  width: 100%;
+  height: 100%;
+  padding: 4px;
+  border: 1px solid var(--hud-edge);
+  border-radius: 4px;
+  background: var(--hud-surface);
+  color: var(--hud-text);
+  text-align: start;
+  transition: background 180ms, border-color 180ms;
 }
+.hud-player:hover, .hud-player:focus-visible { background: var(--hud-surface); border-color: var(--hud-aqua); color: var(--hud-text); }
 
 .hud-avatar {
   position: relative;
   display: grid;
-  height: clamp(2rem, 11cqw, 2.9rem);
-  width: clamp(2rem, 11cqw, 2.9rem);
+  height: 44px;
+  width: 44px;
   flex: none;
   place-items: center;
-  overflow: visible;
-  border-radius: 0.55rem;
-  border: 2px solid var(--gold);
-  background: linear-gradient(160deg, oklch(0.4 0.07 250), oklch(0.18 0.04 255));
-  box-shadow: 0 3px 0 oklch(0.42 0.1 65), 0 4px 12px oklch(0 0 0 / 0.6);
+  overflow: hidden;
+  border-radius: 3px;
+  border: 1px solid var(--hud-aqua);
+  background: var(--hud-glass);
 }
 
-.hud-avatar-art { height: 100%; width: 100%; border-radius: 0.42rem; object-fit: cover; }
+.hud-avatar-art { height: 100%; width: 100%; border-radius: 2px; object-fit: cover; }
 
-.hud-lvl {
-  position: absolute;
-  bottom: -0.42rem;
-  inset-inline-start: 50%;
-  transform: translateX(-50%);
-  padding: 0 0.34rem;
-  border-radius: 999px;
-  border: 1px solid oklch(0.45 0.09 55);
-  font-size: clamp(0.5rem, 2.4cqw, 0.62rem);
-  font-weight: 900;
-  color: oklch(0.16 0.02 250);
-  background: linear-gradient(180deg, var(--gold), var(--gold-deep));
-  box-shadow: 0 1px 4px oklch(0 0 0 / 0.6);
-}
-
-.hud-id { display: grid; gap: 0.2rem; min-width: 0; }
+.hud-id { display: grid; gap: 2px; min-width: 0; flex: 1; }
 
 .hud-name {
-  max-width: clamp(3.5rem, 22cqw, 9rem);
+  max-width: 103px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: clamp(0.58rem, 2.9cqw, 0.9rem);
-  font-weight: 900;
-  color: oklch(0.99 0.03 92);
-  text-shadow: 0 1px 2px oklch(0.1 0.03 45 / 0.9);
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--hud-text);
 }
+.hud-rank { display: flex; align-items: center; justify-content: space-between; font-size: 9px; color: var(--hud-subtle); }
+.hud-rank svg { width: 11px; height: 11px; }
 
 .hud-level {
   display: block;
-  height: 0.34rem;
-  width: clamp(3rem, 20cqw, 6rem);
-  border-radius: 999px;
-  border: 1px solid oklch(0.2 0.04 45 / 0.6);
-  background: oklch(0.14 0.03 45 / 0.75);
+  height: 3px;
+  width: 100%;
+  border-radius: 2px;
+  background: var(--hud-glass);
   overflow: hidden;
 }
 
 .hud-level > i {
   display: block;
   height: 100%;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--gold-deep), oklch(0.92 0.17 92));
-  box-shadow: 0 0 8px color-mix(in oklab, var(--gold) 65%, transparent);
+  background: var(--hud-aqua);
 }
 
-/* Every resource stays readable — the row wraps instead of clipping numbers. */
 .hud-values {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  align-items: center;
-  gap: clamp(0.15rem, 1.2cqw, 0.4rem);
+  height: 100%;
+  gap: 6px;
   min-width: 0;
 }
 
 .hud-slot {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  gap: 0.22rem;
+  justify-content: center;
+  gap: 2px;
   min-width: 0;
-  padding: 0.2rem 0.3rem;
-  border-radius: 0.45rem;
-  border: 1px solid oklch(0.88 0.13 85 / 0.4);
-  background: linear-gradient(180deg, oklch(0.2 0.05 250 / 0.9), oklch(0.11 0.03 250 / 0.95));
-  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.14);
+  border-radius: 4px;
+  border: 1px solid var(--hud-edge);
+  background: var(--hud-surface);
 }
 
 .hud-ico {
-  height: clamp(0.85rem, 4.4cqw, 1.3rem);
-  width: clamp(0.85rem, 4.4cqw, 1.3rem);
+  height: 22px;
+  width: 22px;
   flex: none;
   object-fit: contain;
-  filter: drop-shadow(0 1px 2px oklch(0 0 0 / 0.7));
 }
 
 .hud-num {
   min-width: 0;
-  font-size: clamp(0.55rem, 2.7cqw, 0.85rem);
-  font-weight: 900;
+  font-size: 12px;
+  font-weight: 800;
   font-variant-numeric: tabular-nums;
-  color: oklch(0.99 0.02 92);
-  text-shadow: 0 1px 2px oklch(0 0 0 / 0.85);
+  color: var(--hud-text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.hud-slot-gold { border-color: color-mix(in oklab, var(--gold) 65%, transparent); }
-.hud-slot-gem { border-color: oklch(0.75 0.16 200 / 0.55); }
-.hud-slot-pearl { border-color: oklch(0.85 0.06 320 / 0.5); }
-.hud-slot-fish { border-color: oklch(0.8 0.12 150 / 0.5); }
+.hud-slot-gold { border-bottom-color: var(--gold); }
+.hud-slot-gem { border-bottom-color: var(--hud-aqua); }
+.hud-slot-pearl { border-bottom-color: var(--hud-subtle); }
+.hud-slot-fish { border-bottom-color: var(--sea-light); }
 
 /* ── Hidden fleet calibration tool (secret code) ─────────── */
 .calib-key {
   position: absolute;
-  z-index: 40;
-  inset-inline-start: 0;
-  bottom: 0;
+  z-index: 50;
+  inset-inline-start: 1rem;
+  top: 4.5rem;
   height: 2.2rem;
   width: 2.2rem;
   padding: 0;
@@ -1564,7 +1556,8 @@
 .calib-panel {
   position: absolute;
   inset-inline: 0.5rem;
-  bottom: 0.6rem;
+  bottom: 7.5rem;
+  z-index: 70;
   display: grid;
   gap: 0.45rem;
   padding: 0.6rem;
