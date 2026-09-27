@@ -1816,3 +1816,220 @@
   .store-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .store-tab { flex-basis: 3.9rem; font-size: 0.7rem; }
 }
+
+/* ── Royal command bar ───────────────────────────────────── */
+.royal-hud {
+  --royal-frame: linear-gradient(180deg, oklch(0.92 0.14 92), oklch(0.72 0.14 78) 45%, oklch(0.55 0.11 70));
+  display: grid;
+  gap: 6px;
+  width: 100%;
+  padding: 2px;
+}
+
+.royal-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.royal-row-lower { grid-template-columns: auto auto minmax(0, 1fr); }
+
+.royal-capsule,
+.royal-tile,
+.royal-plate {
+  position: relative;
+  border-radius: 12px;
+  padding: 3px;
+  background: var(--royal-frame);
+  box-shadow: 0 6px 16px oklch(0.05 0.02 250 / 0.55), inset 0 1px 0 oklch(1 0 0 / 0.4);
+}
+
+.royal-capsule {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 42px;
+  padding: 3px 6px 3px 3px;
+}
+
+.royal-capsule::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 9px;
+  background: linear-gradient(180deg, oklch(0.2 0.02 250), oklch(0.09 0.01 250));
+}
+
+.royal-capsule > * { position: relative; z-index: 1; }
+
+.royal-orb {
+  height: 26px;
+  width: 26px;
+  flex: none;
+  border-radius: 50%;
+  box-shadow: inset 0 -3px 6px oklch(0.1 0.05 60 / 0.55), inset 0 3px 5px oklch(1 0 0 / 0.5), 0 0 10px currentColor;
+}
+
+.royal-orb-gold {
+  color: oklch(0.8 0.15 90 / 0.6);
+  background: radial-gradient(circle at 35% 30%, oklch(0.97 0.1 95), oklch(0.8 0.16 88) 55%, oklch(0.6 0.13 75));
+}
+.royal-orb-ruby {
+  color: oklch(0.6 0.22 25 / 0.6);
+  clip-path: polygon(50% 0, 100% 36%, 78% 100%, 22% 100%, 0 36%);
+  border-radius: 0;
+  background: radial-gradient(circle at 35% 28%, oklch(0.8 0.17 22), oklch(0.55 0.23 26) 60%, oklch(0.38 0.18 25));
+}
+.royal-orb-sapphire {
+  color: oklch(0.65 0.2 250 / 0.6);
+  clip-path: polygon(50% 0, 100% 36%, 78% 100%, 22% 100%, 0 36%);
+  border-radius: 0;
+  background: radial-gradient(circle at 35% 28%, oklch(0.88 0.13 235), oklch(0.6 0.2 252) 60%, oklch(0.42 0.16 255));
+}
+.royal-orb-fish {
+  color: oklch(0.75 0.13 220 / 0.55);
+  clip-path: polygon(0 50%, 26% 16%, 72% 12%, 100% 50%, 72% 88%, 26% 84%);
+  border-radius: 0;
+  background: radial-gradient(circle at 40% 32%, oklch(0.9 0.09 215), oklch(0.66 0.14 225) 65%, oklch(0.48 0.12 235));
+}
+
+.royal-value {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.82rem;
+  font-weight: 900;
+  line-height: 1.05;
+  color: oklch(0.98 0.01 100);
+  text-shadow: 0 1px 2px oklch(0.05 0 0 / 0.9);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.royal-fish-stack { display: grid; gap: 1px; flex: 1; text-align: center; }
+.royal-caption { font-size: 0.55rem; font-weight: 700; color: oklch(0.82 0.03 220); }
+
+.royal-plus {
+  display: grid;
+  place-items: center;
+  height: 22px;
+  width: 22px;
+  flex: none;
+  border-radius: 6px;
+  background: linear-gradient(180deg, oklch(0.8 0.2 145), oklch(0.55 0.18 148));
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.5), 0 2px 5px oklch(0.05 0 0 / 0.6);
+  transition: transform 0.12s ease;
+}
+.royal-plus svg { height: 15px; width: 15px; color: oklch(0.99 0 0); stroke-width: 3.5; }
+.royal-plus:hover { transform: scale(1.1); }
+.royal-plus:active { transform: scale(0.92); }
+
+.royal-tile {
+  display: grid;
+  place-items: center;
+  height: 58px;
+  width: 58px;
+  transition: transform 0.15s ease;
+}
+.royal-tile::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 9px;
+  background: linear-gradient(180deg, oklch(0.2 0.02 250), oklch(0.09 0.01 250));
+}
+.royal-tile > * { position: relative; z-index: 1; }
+.royal-tile:hover { transform: translateY(-2px); }
+
+.royal-gift { background: linear-gradient(180deg, oklch(0.72 0.21 28), oklch(0.45 0.18 27)); }
+.royal-gift svg {
+  height: 30px;
+  width: 30px;
+  color: oklch(0.88 0.16 80);
+  filter: drop-shadow(0 0 7px oklch(0.8 0.17 60 / 0.7));
+  animation: royal-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes royal-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+}
+
+.royal-face-art { height: 48px; width: 48px; border-radius: 8px; object-fit: cover; }
+.royal-face-plus {
+  position: absolute;
+  inset-inline-start: -4px;
+  bottom: -4px;
+  display: grid;
+  place-items: center;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, oklch(0.8 0.2 145), oklch(0.55 0.18 148));
+  box-shadow: 0 2px 5px oklch(0.05 0 0 / 0.6);
+}
+.royal-face-plus svg { height: 13px; width: 13px; color: oklch(0.99 0 0); stroke-width: 3.5; }
+
+.royal-plate {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 2px;
+  min-height: 58px;
+  padding: 6px 10px;
+}
+.royal-plate::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 9px;
+  background: linear-gradient(180deg, oklch(0.2 0.02 250), oklch(0.08 0.01 250));
+}
+.royal-plate > * { position: relative; z-index: 1; }
+
+.royal-plate-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.6rem;
+  font-weight: 800;
+  color: oklch(0.85 0.14 88);
+}
+.royal-plate-top svg { height: 13px; width: 13px; }
+
+.royal-plate-name {
+  font-size: 1.05rem;
+  font-weight: 900;
+  line-height: 1.15;
+  color: oklch(0.99 0.01 100);
+  text-shadow: 0 2px 4px oklch(0.05 0 0 / 0.9);
+}
+
+.royal-plate-sub { font-size: 0.58rem; font-weight: 700; color: oklch(0.78 0.04 220); }
+
+.royal-xp {
+  display: block;
+  width: min(180px, 80%);
+  height: 5px;
+  border-radius: 999px;
+  background: oklch(0.25 0.02 250);
+  box-shadow: inset 0 1px 2px oklch(0 0 0 / 0.7);
+  overflow: hidden;
+}
+.royal-xp > i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, oklch(0.75 0.16 85), oklch(0.93 0.15 95));
+}
+
+@media (max-width: 420px) {
+  .royal-capsule { min-height: 36px; gap: 3px; padding: 3px; }
+  .royal-orb { height: 20px; width: 20px; }
+  .royal-value { font-size: 0.66rem; }
+  .royal-plus { height: 18px; width: 18px; }
+  .royal-tile { height: 48px; width: 48px; }
+  .royal-face-art { height: 40px; width: 40px; }
+  .royal-plate-name { font-size: 0.85rem; }
+}
