@@ -1,10 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { X } from "lucide-react";
 
-import shipIdle from "@/assets/ships/ship-v2-idle.png.asset.json";
-import shipCast from "@/assets/ships/ship-v2-cast.png.asset.json";
-import shipHaul from "@/assets/ships/ship-v2-haul.png.asset.json";
-import shipSubmerged from "@/assets/ships/ship-v2-submerged.png.asset.json";
+import { starterShip } from "@/lib/fleetCatalog";
 import actSail from "@/assets/actions/act-sail.png.asset.json";
 import actCrew from "@/assets/actions/act-crew.png.asset.json";
 import actSell from "@/assets/actions/act-sell.png.asset.json";
