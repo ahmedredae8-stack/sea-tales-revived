@@ -1,8 +1,12 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { defaultLanes, publishLanes, type Lane } from "@/lib/fleetLayout";
+import { defaultLanes, publishLanes, publishLanesEverywhere, type Lane } from "@/lib/fleetLayout";
+import { themes } from "@/lib/themes";
 import { playSfx } from "@/lib/sound";
+
+/** The day/night badge quietly asks for the owner tool through this event. */
+export const CALIB_EVENT = "ib:calibrator-open";
 
 const SECRET = "123";
 
