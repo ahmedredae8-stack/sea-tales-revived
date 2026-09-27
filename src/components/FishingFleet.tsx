@@ -24,14 +24,15 @@ type ShipStyle = CSSProperties & {
   "--ship-delay": string;
 };
 
-const initialFleet: FleetShip[] = [1, 2, 3].map((id) => ({ id, state: "docked" }));
-const delays = ["0ms", "240ms", "480ms"];
+/** One hull on the water — the drawn ship with all four poses. */
+const initialFleet: FleetShip[] = [{ id: 1, state: "docked" }];
+const delays = ["0ms"];
 
 const shipFrames = [
-  { key: "idle", src: shipIdle.url },
-  { key: "cast", src: shipCast.url },
-  { key: "submerged", src: shipSubmerged.url },
-  { key: "haul", src: shipHaul.url },
+  { key: "idle", src: starterShip.poses.idle },
+  { key: "cast", src: starterShip.poses.cast },
+  { key: "submerged", src: starterShip.poses.submerged },
+  { key: "haul", src: starterShip.poses.haul },
 ] as const;
 
 /** States where the hull sits at the far end of its lane. */
