@@ -11,6 +11,7 @@ import { DailyReward } from "@/components/DailyReward";
 import { QuestBoard } from "@/components/QuestBoard";
 import { BottomDock, type DockAction } from "@/components/BottomDock";
 import { FishingFleet } from "@/components/FishingFleet";
+import { CALIB_EVENT } from "@/components/FleetCalibrator";
 import { usePlayer } from "@/hooks/usePlayer";
 import { useStageScale } from "@/hooks/useStageScale";
 import { saveThemeToAccount } from "@/lib/player";
