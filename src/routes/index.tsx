@@ -11,6 +11,7 @@ import { DailyReward } from "@/components/DailyReward";
 import { QuestBoard } from "@/components/QuestBoard";
 import { BottomDock, type DockAction } from "@/components/BottomDock";
 import { FishingFleet } from "@/components/FishingFleet";
+import { CALIB_EVENT } from "@/components/FleetCalibrator";
 import { usePlayer } from "@/hooks/usePlayer";
 import { useStageScale } from "@/hooks/useStageScale";
 import { saveThemeToAccount } from "@/lib/player";
@@ -178,10 +179,15 @@ function Index() {
         >
           <img src={sound ? "/__l5e/assets-v1/e24c9aca-fd04-4d5a-be7b-20f0b53a804c/sound-on.png" : "/__l5e/assets-v1/8ee818c7-e155-4144-8305-1820d57e279a/sound-off.png"} alt="" className="h-6 w-6 object-contain" />
         </button>
-        <span className="phase-chip">
+        <button
+          type="button"
+          className="phase-chip"
+          onClick={() => window.dispatchEvent(new CustomEvent(CALIB_EVENT))}
+          aria-label={phaseLabel(phase)}
+        >
           {phase === "day" ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
           {phaseLabel(phase)}
-        </span>
+        </button>
       </div>
 
       <BottomDock onAction={handleDockAction} />

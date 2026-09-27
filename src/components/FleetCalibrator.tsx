@@ -1,8 +1,12 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { defaultLanes, publishLanes, type Lane } from "@/lib/fleetLayout";
+import { defaultLanes, publishLanes, publishLanesEverywhere, type Lane } from "@/lib/fleetLayout";
+import { themes } from "@/lib/themes";
 import { playSfx } from "@/lib/sound";
+
+/** The day/night badge quietly asks for the owner tool through this event. */
+export const CALIB_EVENT = "ib:calibrator-open";
 
 const SECRET = "123";
 
@@ -54,22 +58,25 @@ export function FleetCalibrator({ lanes, onChange, onTest, themeId, themeName }:
     onChange(lanes.map((lane, i) => (i === index ? { ...lane, size } : lane)));
   };
 
+  useEffect(() => {
+    const open = () => setStage((current) => (current === "hidden" ? "gate" : current));
+    window.addEventListener(CALIB_EVENT, open);
+    return () => window.removeEventListener(CALIB_EVENT, open);
+  }, []);
+
   const publish = async () => {
-    setStatus("جاري النشر…");
+    setStatus("جاري الحفظ…");
     const ok = await publishLanes(themeId, lanes);
-    setStatus(ok ? "تم النشر لكل اللاعبين ✔" : "لم يتم النشر، حاول مرة أخرى");
+    setStatus(ok ? `تم الحفظ لمحيط ${themeName} ✔` : "لم يتم الحفظ، حاول مرة أخرى");
   };
 
-  if (stage === "hidden") {
-    return (
-      <button
-        type="button"
-        className="calib-key"
-        aria-label="أداة المالك"
-        onClick={() => setStage("gate")}
-      />
-    );
-  }
+  const publishAll = async () => {
+    setStatus("جاري الحفظ لكل المحيطات…");
+    const ok = await publishLanesEverywhere(themes.map((t) => t.id), lanes);
+    setStatus(ok ? "تم الحفظ على كل الخلفيات ✔" : "لم يتم الحفظ، حاول مرة أخرى");
+  };
+
+  if (stage === "hidden") return null;
 
   if (stage === "gate") {
     return (
@@ -190,7 +197,10 @@ export function FleetCalibrator({ lanes, onChange, onTest, themeId, themeName }:
             تجربة الإبحار
           </Button>
           <Button size="sm" onClick={() => void publish()}>
-             حفظ ونشر لهذه الخلفية
+            حفظ لهذا المحيط
+          </Button>
+          <Button size="sm" onClick={() => void publishAll()}>
+            حفظ لكل المحيطات
           </Button>
           <Button size="sm" variant="secondary" onClick={() => onChange(defaultLanes)}>
             استرجاع الافتراضي

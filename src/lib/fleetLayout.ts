@@ -81,3 +81,16 @@ export async function publishLanes(themeId: string, lanes: Lane[]): Promise<bool
     .upsert({ id: themeId, lanes: clean }, { onConflict: "id" });
   return !error;
 }
+
+/** Publish one layout to every ocean at once. */
+export async function publishLanesEverywhere(themeIds: string[], lanes: Lane[]): Promise<boolean> {
+  const clean = normalizeLanes(lanes);
+  themeIds.forEach((id) => cache(id, clean));
+  const { error } = await supabase
+    .from("fleet_layout")
+    .upsert(
+      themeIds.map((id) => ({ id, lanes: clean })),
+      { onConflict: "id" },
+    );
+  return !error;
+}

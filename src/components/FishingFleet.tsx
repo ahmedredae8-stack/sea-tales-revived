@@ -1,10 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { X } from "lucide-react";
 
-import shipIdle from "@/assets/ships/ship-v2-idle.png.asset.json";
-import shipCast from "@/assets/ships/ship-v2-cast.png.asset.json";
-import shipHaul from "@/assets/ships/ship-v2-haul.png.asset.json";
-import shipSubmerged from "@/assets/ships/ship-v2-submerged.png.asset.json";
+import { starterShip } from "@/lib/fleetCatalog";
 import actSail from "@/assets/actions/act-sail.png.asset.json";
 import actCrew from "@/assets/actions/act-crew.png.asset.json";
 import actSell from "@/assets/actions/act-sell.png.asset.json";
@@ -27,14 +24,15 @@ type ShipStyle = CSSProperties & {
   "--ship-delay": string;
 };
 
-const initialFleet: FleetShip[] = [1, 2, 3].map((id) => ({ id, state: "docked" }));
-const delays = ["0ms", "240ms", "480ms"];
+/** One hull on the water — the drawn ship with all four poses. */
+const initialFleet: FleetShip[] = [{ id: 1, state: "docked" }];
+const delays = ["0ms"];
 
 const shipFrames = [
-  { key: "idle", src: shipIdle.url },
-  { key: "cast", src: shipCast.url },
-  { key: "submerged", src: shipSubmerged.url },
-  { key: "haul", src: shipHaul.url },
+  { key: "idle", src: starterShip.poses.idle },
+  { key: "cast", src: starterShip.poses.cast },
+  { key: "submerged", src: starterShip.poses.submerged },
+  { key: "haul", src: starterShip.poses.haul },
 ] as const;
 
 /** States where the hull sits at the far end of its lane. */
@@ -190,7 +188,7 @@ export function FishingFleet({ themeId, themeName }: { themeId: string; themeNam
       {sellFor !== null && (
         <div className="fleet-modal" role="dialog" aria-modal="true" aria-label="بيع السفينة" onClick={() => setSellFor(null)}>
           <section className="sell-panel" dir="rtl" onClick={(event) => event.stopPropagation()}>
-            <img src={shipIdle.url} alt="" width={1536} height={1024} />
+            <img src={starterShip.poses.idle} alt="" width={1024} height={640} />
             <h2>بيع السفينة؟</h2>
             <p>ستحصل على 12,500 عملة ذهبية. سيبقى أسطولك قابلاً للإبحار بالسفن الأخرى.</p>
             <div>

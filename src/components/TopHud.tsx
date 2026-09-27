@@ -1,65 +1,99 @@
 import { CaptainAvatar, nameSeed } from "@/components/GameSprite";
-import { Button } from "@/components/ui/button";
-import { ChevronRight } from "lucide-react";
+import { Crown, Gift, Plus } from "lucide-react";
 
 type Props = {
   name: string;
   avatar?: number;
+  title?: string;
   level?: number;
   progress?: number;
   coins?: number;
-  gems?: number;
-  pearls?: number;
+  rubies?: number;
+  diamonds?: number;
   fishFound?: number;
   fishTotal?: number;
   onAvatarClick?: () => void;
+  onGiftClick?: () => void;
+  onTopUp?: (kind: "coins" | "rubies" | "diamonds") => void;
 };
 
-/** Compact game HUD: a captain command tile and four live resources. */
+/** Royal command bar: gilded resource capsules plus the captain's title plate. */
 export function TopHud({
   name,
   avatar,
+  title = "الملك البحري",
   level = 12,
   progress = 0.62,
   coins = 125680,
-  gems = 2450,
-  pearls = 1280,
+  rubies = 2450,
+  diamonds = 1280,
   fishFound = 27,
   fishTotal = 40,
   onAvatarClick,
+  onGiftClick,
+  onTopUp,
 }: Props) {
   const seed = avatar ?? nameSeed(name);
-  const fmt = (n: number) => (n >= 10000 ? `${Math.round(n / 1000)}K` : n.toLocaleString("en-US"));
+  const fmt = (n: number) => n.toLocaleString("en-US");
 
-  const values = [
-    { key: "coin", icon: "/__l5e/assets-v1/906f37c0-d530-4e50-a3ce-00deaaf40a02/coin.png", text: fmt(coins), tone: "gold" },
-    { key: "gem", icon: "/__l5e/assets-v1/81b9318d-8399-478f-bd28-abec7665a1a6/gem.png", text: fmt(gems), tone: "gem" },
-    { key: "pearl", icon: "/__l5e/assets-v1/4b0616ca-5528-47ea-8c87-3ea157b6de3e/fish-pearl.png", text: fmt(pearls), tone: "pearl" },
-    { key: "fish", icon: "/__l5e/assets-v1/d40f7c1c-8c7f-47ec-89a0-120eaa992bde/fish-tuna.png", text: `${fishFound}/${fishTotal}`, tone: "fish" },
+  const capsules = [
+    { key: "coins" as const, tone: "gold", value: fmt(coins), label: "الذهب" },
+    { key: "rubies" as const, tone: "ruby", value: fmt(rubies), label: "الياقوت" },
+    { key: "diamonds" as const, tone: "sapphire", value: fmt(diamonds), label: "الألماس" },
   ];
 
   return (
-    <div className="hud-bar" dir="rtl">
-      <Button type="button" variant="ghost" className="hud-player" onClick={onAvatarClick} aria-label="حساب القبطان" title="حساب القبطان">
-        <span className="hud-avatar">
-          <CaptainAvatar seed={seed} className="hud-avatar-art" />
-        </span>
-        <span className="hud-id">
-          <span className="hud-name">{name}</span>
-          <span className="hud-rank">المستوى {level} <ChevronRight aria-hidden="true" /></span>
-          <span className="hud-level">
-            <i style={{ width: `${Math.round(progress * 100)}%` }} />
-          </span>
-        </span>
-      </Button>
-
-      <div className="hud-values">
-        {values.map((v) => (
-          <div key={v.key} className={`hud-slot hud-slot-${v.tone}`}>
-            <img src={v.icon} alt="" className="hud-ico" draggable={false} />
-            <span className="hud-num">{v.text}</span>
+    <div className="royal-hud" dir="rtl">
+      <div className="royal-row">
+        {capsules.map((c) => (
+          <div key={c.key} className={`royal-capsule royal-capsule-${c.tone}`}>
+            <span className={`royal-orb royal-orb-${c.tone}`} aria-hidden="true" />
+            <span className="royal-value">{c.value}</span>
+            <button
+              type="button"
+              className="royal-plus"
+              aria-label={`شحن ${c.label}`}
+              onClick={() => onTopUp?.(c.key)}
+            >
+              <Plus aria-hidden="true" />
+            </button>
           </div>
         ))}
+
+        <div className="royal-capsule royal-capsule-fish">
+          <span className="royal-orb royal-orb-fish" aria-hidden="true" />
+          <span className="royal-fish-stack">
+            <span className="royal-value">
+              {fishFound}/{fishTotal}
+            </span>
+            <span className="royal-caption">نوع مستكشف</span>
+          </span>
+        </div>
+      </div>
+
+      <div className="royal-row royal-row-lower">
+        <button type="button" className="royal-tile royal-gift" aria-label="الهدايا" onClick={onGiftClick}>
+          <Gift aria-hidden="true" />
+        </button>
+
+        <button type="button" className="royal-tile royal-face" aria-label="حساب القبطان" onClick={onAvatarClick}>
+          <CaptainAvatar seed={seed} className="royal-face-art" />
+          <span className="royal-face-plus" aria-hidden="true">
+            <Plus />
+          </span>
+        </button>
+
+        <div className="royal-plate">
+          <span className="royal-plate-top">
+            <Crown aria-hidden="true" />
+            <span>اللاعب</span>
+          </span>
+          <strong className="royal-plate-name">{title}</strong>
+          <span className="royal-plate-sub">{name} · المستوى {level}</span>
+          <span className="royal-xp">
+            <i style={{ width: `${Math.round(progress * 100)}%` }} />
+          </span>
+        </div>
       </div>
     </div>
   );
