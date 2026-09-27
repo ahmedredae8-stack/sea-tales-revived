@@ -188,7 +188,7 @@ export function FishingFleet({ themeId, themeName }: { themeId: string; themeNam
       {sellFor !== null && (
         <div className="fleet-modal" role="dialog" aria-modal="true" aria-label="بيع السفينة" onClick={() => setSellFor(null)}>
           <section className="sell-panel" dir="rtl" onClick={(event) => event.stopPropagation()}>
-            <img src={shipIdle.url} alt="" width={1536} height={1024} />
+            <img src={starterShip.poses.idle} alt="" width={1024} height={640} />
             <h2>بيع السفينة؟</h2>
             <p>ستحصل على 12,500 عملة ذهبية. سيبقى أسطولك قابلاً للإبحار بالسفن الأخرى.</p>
             <div>
