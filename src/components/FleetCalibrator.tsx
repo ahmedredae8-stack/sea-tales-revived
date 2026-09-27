@@ -58,22 +58,25 @@ export function FleetCalibrator({ lanes, onChange, onTest, themeId, themeName }:
     onChange(lanes.map((lane, i) => (i === index ? { ...lane, size } : lane)));
   };
 
+  useEffect(() => {
+    const open = () => setStage((current) => (current === "hidden" ? "gate" : current));
+    window.addEventListener(CALIB_EVENT, open);
+    return () => window.removeEventListener(CALIB_EVENT, open);
+  }, []);
+
   const publish = async () => {
-    setStatus("جاري النشر…");
+    setStatus("جاري الحفظ…");
     const ok = await publishLanes(themeId, lanes);
-    setStatus(ok ? "تم النشر لكل اللاعبين ✔" : "لم يتم النشر، حاول مرة أخرى");
+    setStatus(ok ? `تم الحفظ لمحيط ${themeName} ✔` : "لم يتم الحفظ، حاول مرة أخرى");
   };
 
-  if (stage === "hidden") {
-    return (
-      <button
-        type="button"
-        className="calib-key"
-        aria-label="أداة المالك"
-        onClick={() => setStage("gate")}
-      />
-    );
-  }
+  const publishAll = async () => {
+    setStatus("جاري الحفظ لكل المحيطات…");
+    const ok = await publishLanesEverywhere(themes.map((t) => t.id), lanes);
+    setStatus(ok ? "تم الحفظ على كل الخلفيات ✔" : "لم يتم الحفظ، حاول مرة أخرى");
+  };
+
+  if (stage === "hidden") return null;
 
   if (stage === "gate") {
     return (
