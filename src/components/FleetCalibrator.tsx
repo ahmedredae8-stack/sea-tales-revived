@@ -197,7 +197,10 @@ export function FleetCalibrator({ lanes, onChange, onTest, themeId, themeName }:
             تجربة الإبحار
           </Button>
           <Button size="sm" onClick={() => void publish()}>
-             حفظ ونشر لهذه الخلفية
+            حفظ لهذا المحيط
+          </Button>
+          <Button size="sm" onClick={() => void publishAll()}>
+            حفظ لكل المحيطات
           </Button>
           <Button size="sm" variant="secondary" onClick={() => onChange(defaultLanes)}>
             استرجاع الافتراضي
