@@ -22,3 +22,11 @@
 - [x] Add three interactive ships to the main sea scene
 - [x] Add per-ship sail/return, crew, and sell actions
 - [x] Add a matching partially submerged net state with only the rope and net edge visible
+
+## Current round (uploaded fleet)
+- [ ] Cut out the 6 uploaded ships and build 4 aligned poses each (idle/cast/submerged/haul)
+- [ ] Delete all old ships/boats from the sea and the catalog
+- [ ] Keep every image as a real local file in the repo (no DB dependency)
+- [ ] Make the hidden calibrator save reliably (this ocean / all oceans)
+- [ ] Align the top bar: avatar, gift and name plate on one height
+- [ ] Give the windows a warm wood-and-gold look instead of black
