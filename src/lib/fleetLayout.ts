@@ -72,8 +72,8 @@ export async function fetchLanes(themeId: string): Promise<Lane[]> {
   return lanes;
 }
 
-/** Publish the layout for everyone, on every device. */
 export type SaveResult = "cloud" | "local";
+
 
 /** Save the layout. It is always kept on this device; when the owner is
  *  signed in it is also published so every player sees the same berths. */

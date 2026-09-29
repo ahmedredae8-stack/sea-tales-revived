@@ -66,15 +66,18 @@ export function FleetCalibrator({ lanes, onChange, onTest, themeId, themeName }:
 
   const publish = async () => {
     setStatus("جاري الحفظ…");
-    const ok = await publishLanes(themeId, lanes);
-    setStatus(ok ? `تم الحفظ لمحيط ${themeName} ✔` : "لم يتم الحفظ، حاول مرة أخرى");
+    const result = await publishLanes(themeId, lanes);
+    setStatus(result === "cloud" ? `تم الحفظ لمحيط ${themeName} لكل اللاعبين ✔` : `تم الحفظ لمحيط ${themeName} على هذا الجهاز ✔`);
+    playSfx("click", 0.6);
   };
 
   const publishAll = async () => {
     setStatus("جاري الحفظ لكل المحيطات…");
-    const ok = await publishLanesEverywhere(themes.map((t) => t.id), lanes);
-    setStatus(ok ? "تم الحفظ على كل الخلفيات ✔" : "لم يتم الحفظ، حاول مرة أخرى");
+    const result = await publishLanesEverywhere(themes.map((t) => t.id), lanes);
+    setStatus(result === "cloud" ? "تم الحفظ على كل الخلفيات لكل اللاعبين ✔" : "تم الحفظ على كل الخلفيات على هذا الجهاز ✔");
+    playSfx("click", 0.6);
   };
+
 
   if (stage === "hidden") return null;
 
