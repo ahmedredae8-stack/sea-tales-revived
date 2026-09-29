@@ -72,25 +72,38 @@ export async function fetchLanes(themeId: string): Promise<Lane[]> {
   return lanes;
 }
 
-/** Publish the layout for everyone, on every device. */
-export async function publishLanes(themeId: string, lanes: Lane[]): Promise<boolean> {
+export type SaveResult = "cloud" | "local";
+
+
+/** Save the layout. It is always kept on this device; when the owner is
+ *  signed in it is also published so every player sees the same berths. */
+export async function publishLanes(themeId: string, lanes: Lane[]): Promise<SaveResult> {
   const clean = normalizeLanes(lanes);
   cache(themeId, clean);
-  const { error } = await supabase
-    .from("fleet_layout")
-    .upsert({ id: themeId, lanes: clean }, { onConflict: "id" });
-  return !error;
+  try {
+    const { error } = await supabase
+      .from("fleet_layout")
+      .upsert({ id: themeId, lanes: clean }, { onConflict: "id" });
+    return error ? "local" : "cloud";
+  } catch {
+    return "local";
+  }
 }
 
-/** Publish one layout to every ocean at once. */
-export async function publishLanesEverywhere(themeIds: string[], lanes: Lane[]): Promise<boolean> {
+/** Save one layout to every ocean at once. */
+export async function publishLanesEverywhere(themeIds: string[], lanes: Lane[]): Promise<SaveResult> {
   const clean = normalizeLanes(lanes);
   themeIds.forEach((id) => cache(id, clean));
-  const { error } = await supabase
-    .from("fleet_layout")
-    .upsert(
-      themeIds.map((id) => ({ id, lanes: clean })),
-      { onConflict: "id" },
-    );
-  return !error;
+  try {
+    const { error } = await supabase
+      .from("fleet_layout")
+      .upsert(
+        themeIds.map((id) => ({ id, lanes: clean })),
+        { onConflict: "id" },
+      );
+    return error ? "local" : "cloud";
+  } catch {
+    return "local";
+  }
 }
+

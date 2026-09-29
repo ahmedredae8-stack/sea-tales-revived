@@ -1,6 +1,10 @@
 import { CaptainAvatar, nameSeed } from "@/components/GameSprite";
 import { Crown, Gift, Plus } from "lucide-react";
 
+import coinArt from "/img/coin.png.asset.json";
+import gemArt from "/img/gem.png.asset.json";
+import fishArt from "/img/fish-tuna.png.asset.json";
+
 type Props = {
   name: string;
   avatar?: number;
@@ -37,9 +41,9 @@ export function TopHud({
   const fmt = (n: number) => n.toLocaleString("en-US");
 
   const capsules = [
-    { key: "coins" as const, tone: "gold", value: fmt(coins), label: "الذهب" },
-    { key: "rubies" as const, tone: "ruby", value: fmt(rubies), label: "الياقوت" },
-    { key: "diamonds" as const, tone: "sapphire", value: fmt(diamonds), label: "الألماس" },
+    { key: "coins" as const, tone: "gold", value: fmt(coins), label: "الذهب", art: coinArt.url },
+    { key: "rubies" as const, tone: "ruby", value: fmt(rubies), label: "الياقوت", art: gemArt.url },
+    { key: "diamonds" as const, tone: "sapphire", value: fmt(diamonds), label: "الألماس", art: gemArt.url },
   ];
 
   return (
@@ -47,7 +51,7 @@ export function TopHud({
       <div className="royal-row">
         {capsules.map((c) => (
           <div key={c.key} className={`royal-capsule royal-capsule-${c.tone}`}>
-            <span className={`royal-orb royal-orb-${c.tone}`} aria-hidden="true" />
+            <img className={`royal-icon royal-icon-${c.tone}`} src={c.art} alt="" aria-hidden="true" />
             <span className="royal-value">{c.value}</span>
             <button
               type="button"
@@ -61,7 +65,7 @@ export function TopHud({
         ))}
 
         <div className="royal-capsule royal-capsule-fish">
-          <span className="royal-orb royal-orb-fish" aria-hidden="true" />
+          <img className="royal-icon" src={fishArt.url} alt="" aria-hidden="true" />
           <span className="royal-fish-stack">
             <span className="royal-value">
               {fishFound}/{fishTotal}

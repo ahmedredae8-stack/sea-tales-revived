@@ -1,19 +1,15 @@
-import boat1Idle from "@/assets/fleet/boat-1-idle.png";
-import boat1Cast from "@/assets/fleet/boat-1-cast.png";
-import boat1Submerged from "@/assets/fleet/boat-1-submerged.png";
-import boat1Haul from "@/assets/fleet/boat-1-haul.png";
-import shipIdle from "@/assets/ships/ship-v2-idle.png.asset.json";
-import shipCast from "@/assets/ships/ship-v2-cast.png.asset.json";
-import shipHaul from "@/assets/ships/ship-v2-haul.png.asset.json";
-import shipSubmerged from "@/assets/ships/ship-v2-submerged.png.asset.json";
+import hull1 from "@/assets/fleet/hull-1.png";
+import hull2 from "@/assets/fleet/hull-2.png";
+import hull3 from "@/assets/fleet/hull-3.png";
+import hull4 from "@/assets/fleet/hull-4.png";
+import hull5 from "@/assets/fleet/hull-5.png";
+import hull6 from "@/assets/fleet/hull-6.png";
 
-/** The four drawn poses every hull in the fleet must ship with. */
-export type PoseSet = {
-  idle: string;
-  cast: string;
-  submerged: string;
-  haul: string;
-};
+/** The six drawn hulls. Every hull is trimmed to the same canvas and waterline,
+ *  so poses never shift: the nets, ropes and spray are drawn over the hull. */
+export const hulls = [hull1, hull2, hull3, hull4, hull5, hull6] as const;
+
+export type ShipPose = "idle" | "cast" | "submerged" | "haul";
 
 export type FleetShip = {
   id: number;
@@ -23,46 +19,54 @@ export type FleetShip = {
   /** Full trip length in seconds, with no crew aboard. */
   tripSeconds: number;
   source: "store" | "tribe";
-  poses: PoseSet;
-  /** True once bespoke artwork exists for all four poses. */
-  drawn: boolean;
+  /** Drawn hull art shared by all four poses. */
+  hull: string;
+  price: number;
+  currency: "coin" | "gem";
 };
 
-/** Placeholder art until each hull gets its own four poses drawn. */
-const fallback: PoseSet = {
-  idle: shipIdle.url,
-  cast: shipCast.url,
-  submerged: shipSubmerged.url,
-  haul: shipHaul.url,
-};
+type Row = [name: string, fish: string[], seconds: number, hull: number, price: number, currency: "coin" | "gem"];
 
-const boat1: PoseSet = {
-  idle: boat1Idle,
-  cast: boat1Cast,
-  submerged: boat1Submerged,
-  haul: boat1Haul,
-};
+const storeRows: Row[] = [
+  ["قارب صغير", ["سردين"], 30, 0, 450, "coin"],
+  ["لنش", ["سردين"], 50, 1, 1200, "coin"],
+  ["مركب", ["سردين", "قد"], 90, 0, 3200, "coin"],
+  ["مركب سريع", ["حفش", "محار"], 120, 1, 7500, "coin"],
+  ["مركب شراعي", ["محار", "سلور"], 180, 2, 14000, "coin"],
+  ["سفينة شراعية", ["قد", "دنيس"], 240, 3, 26000, "coin"],
+  ["سفينة صيد", ["مفلطح", "سلمون"], 360, 4, 48000, "coin"],
+  ["سفينة صيد كبيرة", ["سلمون", "كريل"], 600, 4, 90000, "coin"],
+  ["مركب كمين", ["سرطان البحر", "قد"], 900, 2, 160000, "coin"],
+  ["يخت", ["سلمون", "سلطعون"], 1080, 5, 280000, "coin"],
+  ["مركب متقدم", ["سمك نهري", "مفلطح"], 1320, 3, 480000, "coin"],
+  ["مركب ثلجي", ["حبار", "ثعبان البحر"], 1500, 4, 750000, "coin"],
+  ["حفارة", ["مانتا راي", "حبار"], 1800, 4, 120, "gem"],
+  ["معرض البحرية", ["سلور", "مانتا راي"], 2100, 5, 220, "gem"],
+  ["مركز أبحاث السفن", ["جراد البحر", "سمكة الأفعى"], 2400, 5, 420, "gem"],
+  ["غواصة", ["الحوت الصيني", "الحوت القاتل"], 3000, 5, 950, "gem"],
+];
+
+const tribeRows: Row[] = [
+  ["ريح", ["سردين", "شمس المحيط"], 30, 0, 60, "gem"],
+  ["نار", ["سردين", "التونة الوثابة"], 30, 1, 60, "gem"],
+  ["برق", ["سردين", "مكاريل"], 30, 2, 60, "gem"],
+];
+
+const build = (rows: Row[], source: "store" | "tribe", offset: number): FleetShip[] =>
+  rows.map(([name, fish, tripSeconds, hull, price, currency], index) => ({
+    id: offset + index + 1,
+    name,
+    fish,
+    tripSeconds,
+    source,
+    hull: hulls[hull]!,
+    price,
+    currency,
+  }));
 
 export const fleetCatalog: FleetShip[] = [
-  { id: 1, name: "قارب صغير", fish: ["سردين"], tripSeconds: 30, source: "store", poses: boat1, drawn: true },
-  { id: 2, name: "لنش", fish: ["سردين"], tripSeconds: 50, source: "store", poses: fallback, drawn: false },
-  { id: 3, name: "مركب", fish: ["سردين", "قد"], tripSeconds: 90, source: "store", poses: fallback, drawn: false },
-  { id: 4, name: "مركب سريع", fish: ["حفش", "محار"], tripSeconds: 120, source: "store", poses: fallback, drawn: false },
-  { id: 5, name: "مركب شراعي", fish: ["محار", "سلور"], tripSeconds: 180, source: "store", poses: fallback, drawn: false },
-  { id: 6, name: "سفينة شراعية", fish: ["قد", "دنيس"], tripSeconds: 240, source: "store", poses: fallback, drawn: false },
-  { id: 7, name: "سفينة صيد", fish: ["مفلطح", "سلمون"], tripSeconds: 360, source: "store", poses: fallback, drawn: false },
-  { id: 8, name: "سفينة صيد كبيرة", fish: ["سلمون", "كريل"], tripSeconds: 600, source: "store", poses: fallback, drawn: false },
-  { id: 9, name: "مركب كمين", fish: ["سرطان البحر", "قد"], tripSeconds: 900, source: "store", poses: fallback, drawn: false },
-  { id: 10, name: "يخت", fish: ["سلمون", "سلطعون"], tripSeconds: 1080, source: "store", poses: fallback, drawn: false },
-  { id: 11, name: "مركب متقدم", fish: ["سمك نهري", "مفلطح"], tripSeconds: 1320, source: "store", poses: fallback, drawn: false },
-  { id: 12, name: "مركب ثلجي", fish: ["حبار", "ثعبان البحر"], tripSeconds: 1500, source: "store", poses: fallback, drawn: false },
-  { id: 13, name: "حفارة", fish: ["مانتا راي", "حبار"], tripSeconds: 1800, source: "store", poses: fallback, drawn: false },
-  { id: 14, name: "معرض البحرية", fish: ["سلور", "مانتا راي"], tripSeconds: 2100, source: "store", poses: fallback, drawn: false },
-  { id: 15, name: "مركز أبحاث السفن", fish: ["جراد البحر", "سمكة الأفعى"], tripSeconds: 2400, source: "store", poses: fallback, drawn: false },
-  { id: 16, name: "غواصة", fish: ["الحوت الصيني", "الحوت القاتل"], tripSeconds: 3000, source: "store", poses: fallback, drawn: false },
-  { id: 17, name: "ريح", fish: ["سردين", "شمس المحيط"], tripSeconds: 30, source: "tribe", poses: fallback, drawn: false },
-  { id: 18, name: "نار", fish: ["سردين", "التونة الوثابة"], tripSeconds: 30, source: "tribe", poses: fallback, drawn: false },
-  { id: 19, name: "برق", fish: ["سردين", "مكاريل"], tripSeconds: 30, source: "tribe", poses: fallback, drawn: false },
+  ...build(storeRows, "store", 0),
+  ...build(tribeRows, "tribe", storeRows.length),
 ];
 
 export const starterShip = fleetCatalog[0]!;

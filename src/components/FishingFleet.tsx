@@ -6,6 +6,8 @@ import actSail from "@/assets/actions/act-sail.png.asset.json";
 import actCrew from "@/assets/actions/act-crew.png.asset.json";
 import actSell from "@/assets/actions/act-sell.png.asset.json";
 import { GameSprite } from "@/components/GameSprite";
+import { ShipNet } from "@/components/ShipNet";
+
 import { FleetCalibrator } from "@/components/FleetCalibrator";
 import { Button } from "@/components/ui/button";
 import { CREWS } from "@/lib/items";
@@ -28,12 +30,9 @@ type ShipStyle = CSSProperties & {
 const initialFleet: FleetShip[] = [{ id: 1, state: "docked" }];
 const delays = ["0ms"];
 
-const shipFrames = [
-  { key: "idle", src: starterShip.poses.idle },
-  { key: "cast", src: starterShip.poses.cast },
-  { key: "submerged", src: starterShip.poses.submerged },
-  { key: "haul", src: starterShip.poses.haul },
-] as const;
+/** The hull shown on the water today. Poses are drawn over it by ShipNet. */
+const activeHull = starterShip.hull;
+
 
 /** States where the hull sits at the far end of its lane. */
 const atSea: ShipState[] = ["sailingOut", "turning", "casting", "fishing", "hauling"];
@@ -52,15 +51,12 @@ export function FishingFleet({ themeId, themeName }: { themeId: string; themeNam
 
   useEffect(() => {
     let active = true;
-    void Promise.all(
-      shipFrames.map(({ src }) => {
-        const image = new Image();
-        image.src = src;
-        return image.decode().catch(() => undefined);
-      }),
-    ).then(() => {
+    const image = new Image();
+    image.src = activeHull;
+    void image.decode().catch(() => undefined).then(() => {
       if (active) setAssetsReady(true);
     });
+
     setLanes(cachedLanes(themeId));
     void fetchLanes(themeId).then((published) => {
       if (active) setLanes(published);
@@ -162,17 +158,16 @@ export function FishingFleet({ themeId, themeName }: { themeId: string; themeNam
               <span className="ship-water-shadow" />
               <span className={`ship-flip ${facingShore.includes(ship.state) ? "ship-flip-turned" : ""}`} aria-hidden="true">
                 <span className="ship-bob">
-                  {shipFrames.map(({ key, src }) => (
-                    <img
-                      key={key}
-                      src={src}
-                      className={`ship-frame ${frame === key ? "ship-frame-active" : ""}`}
-                      alt=""
-                      width={1536}
-                      height={1024}
-                      draggable={false}
-                    />
-                  ))}
+                  <img
+                    src={activeHull}
+                    className="ship-frame ship-frame-active"
+                    alt=""
+                    width={1024}
+                    height={640}
+                    draggable={false}
+                  />
+                  <ShipNet pose={frame} />
+
                 </span>
               </span>
               <span className="sr-only">سفينة الصيد {ship.id}</span>
@@ -188,7 +183,7 @@ export function FishingFleet({ themeId, themeName }: { themeId: string; themeNam
       {sellFor !== null && (
         <div className="fleet-modal" role="dialog" aria-modal="true" aria-label="بيع السفينة" onClick={() => setSellFor(null)}>
           <section className="sell-panel" dir="rtl" onClick={(event) => event.stopPropagation()}>
-            <img src={starterShip.poses.idle} alt="" width={1024} height={640} />
+            <img src={activeHull} alt="" width={1024} height={640} />
             <h2>بيع السفينة؟</h2>
             <p>ستحصل على 12,500 عملة ذهبية. سيبقى أسطولك قابلاً للإبحار بالسفن الأخرى.</p>
             <div>
