@@ -3,7 +3,7 @@ import type { ShipPose } from "@/lib/fleetCatalog";
 /** Rigged fishing net drawn over the hull.
  *  The hull art never changes, so the four poses line up perfectly:
  *  the rope, mesh, floats, spray and catch are all drawn here. */
-export function ShipNet({ pose }: { pose: ShipPose }) {
+export function ShipNet({ pose, spray = true }: { pose: ShipPose; spray?: boolean }) {
   if (pose === "idle") return null;
   return (
     <span className={`ship-net ship-net-${pose}`} aria-hidden="true">
@@ -36,12 +36,14 @@ export function ShipNet({ pose }: { pose: ShipPose }) {
           </g>
         </g>
 
-        <g className="net-spray">
-          <circle cx="150" cy="70" r="2.4" />
-          <circle cx="164" cy="60" r="1.8" />
-          <circle cx="140" cy="58" r="1.5" />
-          <circle cx="170" cy="78" r="2" />
-        </g>
+        {spray && (
+          <g className="net-spray">
+            <circle cx="150" cy="70" r="2.4" />
+            <circle cx="164" cy="60" r="1.8" />
+            <circle cx="140" cy="58" r="1.5" />
+            <circle cx="170" cy="78" r="2" />
+          </g>
+        )}
       </svg>
     </span>
   );
