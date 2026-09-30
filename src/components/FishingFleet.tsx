@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { X } from "lucide-react";
 
-import { starterShip } from "@/lib/fleetCatalog";
+import { hulls, type ShipPose } from "@/lib/fleetCatalog";
 import actSail from "@/assets/actions/act-sail.png.asset.json";
 import actCrew from "@/assets/actions/act-crew.png.asset.json";
 import actSell from "@/assets/actions/act-sell.png.asset.json";
@@ -26,12 +26,14 @@ type ShipStyle = CSSProperties & {
   "--ship-delay": string;
 };
 
-/** One hull on the water — the drawn ship with all four poses. */
-const initialFleet: FleetShip[] = [{ id: 1, state: "docked" }];
-const delays = ["0ms"];
+/** Three hulls of the first boat on the water, each on its own lane. */
+const initialFleet: FleetShip[] = [
+  { id: 1, state: "docked" },
+  { id: 2, state: "docked" },
+  { id: 3, state: "docked" },
+];
+const delays = ["0ms", "420ms", "860ms"];
 
-/** The hull shown on the water today. Poses are drawn over it by ShipNet. */
-const activeHull = starterShip.hull;
 
 
 /** States where the hull sits at the far end of its lane. */
@@ -47,6 +49,11 @@ export function FishingFleet({ themeId, themeName }: { themeId: string; themeNam
   const [selected, setSelected] = useState<number | null>(null);
   const [crewFor, setCrewFor] = useState<number | null>(null);
   const [sellFor, setSellFor] = useState<number | null>(null);
+  /** Owner tool preview: which of the six hulls to show, poses and spray. */
+  const [hullIndex, setHullIndex] = useState(0);
+  const [spray, setSpray] = useState(true);
+  const [poseOverride, setPoseOverride] = useState<ShipPose | null>(null);
+  const activeHull = hulls[hullIndex] ?? hulls[0]!;
   const timers = useRef<number[]>([]);
 
   useEffect(() => {
@@ -115,7 +122,7 @@ export function FishingFleet({ themeId, themeName }: { themeId: string; themeNam
         const lane = lanes[index];
         if (!lane) return null;
         const busy = busyStates.includes(ship.state);
-        const frame = ship.state === "casting" ? "cast" : ship.state === "fishing" ? "submerged" : ship.state === "hauling" ? "haul" : "idle";
+        const frame: ShipPose = poseOverride ?? (ship.state === "casting" ? "cast" : ship.state === "fishing" ? "submerged" : ship.state === "hauling" ? "haul" : "idle");
         const style: ShipStyle = {
           "--ship-x": `${lane.dockX}%`,
           "--ship-y": `${lane.dockY}%`,
@@ -166,7 +173,7 @@ export function FishingFleet({ themeId, themeName }: { themeId: string; themeNam
                     height={640}
                     draggable={false}
                   />
-                  <ShipNet pose={frame} />
+                  <ShipNet pose={frame} spray={spray} />
 
                 </span>
               </span>
@@ -177,7 +184,19 @@ export function FishingFleet({ themeId, themeName }: { themeId: string; themeNam
         );
       })}
 
-      <FleetCalibrator lanes={lanes} onChange={setLanes} onTest={testSail} themeId={themeId} themeName={themeName} />
+      <FleetCalibrator
+        lanes={lanes}
+        onChange={setLanes}
+        onTest={testSail}
+        themeId={themeId}
+        themeName={themeName}
+        hullIndex={hullIndex}
+        onHullChange={setHullIndex}
+        spray={spray}
+        onSprayChange={setSpray}
+        pose={poseOverride}
+        onPoseChange={setPoseOverride}
+      />
 
       {crewFor !== null && <CrewPanel shipId={crewFor} onClose={() => setCrewFor(null)} />}
       {sellFor !== null && (

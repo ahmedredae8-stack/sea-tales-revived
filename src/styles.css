@@ -2033,3 +2033,77 @@
   .royal-face-art { height: 40px; width: 40px; }
   .royal-plate-name { font-size: 0.85rem; }
 }
+
+/* ── Calibrator hull picker ──────────────────────────────── */
+.calib-hulls { flex-wrap: wrap; gap: 0.3rem; }
+.calib-hull {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 3.2rem;
+  height: 2.2rem;
+  border: 2px solid oklch(0.55 0.1 40);
+  border-radius: 0.45rem;
+  background: linear-gradient(180deg, oklch(0.28 0.05 250), oklch(0.16 0.04 250));
+}
+.calib-hull img { width: 100%; height: 100%; object-fit: contain; }
+.calib-hull span {
+  position: absolute;
+  inset-inline-start: 2px;
+  top: 1px;
+  font-size: 0.6rem;
+  font-weight: 900;
+  color: var(--gold);
+}
+.calib-hull-active { border-color: var(--gold); box-shadow: 0 0 0 2px oklch(0.8 0.15 88 / 0.4); }
+
+/* ── Royal wood-and-gold window skin ─────────────────────── */
+.win-frame,
+.shop-panel,
+.store-shell,
+.crew-panel,
+.sell-panel,
+.calib-panel {
+  border: 2px solid oklch(0.74 0.13 82) !important;
+  background:
+    radial-gradient(120% 90% at 50% 0%, oklch(0.32 0.07 44 / 0.95), transparent 70%),
+    repeating-linear-gradient(90deg, oklch(0.24 0.055 34 / 0.55) 0 7px, oklch(0.2 0.05 30 / 0.55) 7px 14px),
+    linear-gradient(180deg, oklch(0.26 0.06 34), oklch(0.15 0.04 28)) !important;
+  box-shadow:
+    inset 0 0 0 1px oklch(0.85 0.14 88 / 0.35),
+    inset 0 2px 18px oklch(0.05 0.02 30 / 0.75),
+    0 26px 60px oklch(0.05 0.02 30 / 0.65) !important;
+}
+
+.win-head,
+.store-head {
+  border-bottom: 2px solid oklch(0.62 0.12 76) !important;
+  background: linear-gradient(180deg, oklch(0.42 0.09 48), oklch(0.24 0.06 34)) !important;
+}
+
+.win-title h2,
+.store-head h2 { color: oklch(0.95 0.13 90) !important; text-shadow: 0 1px 2px oklch(0.1 0.03 30 / 0.9); }
+
+.win-close {
+  border: 2px solid oklch(0.74 0.13 82) !important;
+  background: linear-gradient(180deg, oklch(0.6 0.19 30), oklch(0.4 0.16 28)) !important;
+  color: oklch(0.97 0.05 88) !important;
+}
+
+/* Resource capsules: clickable, ruby tinted, icons aligned. */
+.royal-capsule { cursor: pointer; }
+.royal-capsule:hover { filter: brightness(1.08); }
+.royal-icon { height: 26px; width: 26px; flex: none; object-fit: contain; filter: drop-shadow(0 2px 3px oklch(0.05 0 0 / 0.7)); }
+.royal-icon-ruby { filter: drop-shadow(0 2px 3px oklch(0.05 0 0 / 0.7)) hue-rotate(-95deg) saturate(2.4); }
+.royal-icon-sapphire { filter: drop-shadow(0 2px 3px oklch(0.05 0 0 / 0.7)) hue-rotate(35deg) saturate(1.5); }
+.royal-row-lower .royal-tile,
+.royal-row-lower .royal-plate { min-height: 62px; height: 62px; }
+.royal-row-lower .royal-tile { width: 62px; }
+.royal-face-art { height: 52px; width: 52px; }
+@media (max-width: 420px) {
+  .royal-icon { height: 20px; width: 20px; }
+  .royal-row-lower .royal-tile,
+  .royal-row-lower .royal-plate { min-height: 52px; height: 52px; }
+  .royal-row-lower .royal-tile { width: 52px; }
+  .royal-face-art { height: 42px; width: 42px; }
+}

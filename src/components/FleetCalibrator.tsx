@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { hulls, type ShipPose } from "@/lib/fleetCatalog";
 import { defaultLanes, publishLanes, publishLanesEverywhere, type Lane } from "@/lib/fleetLayout";
 import { themes } from "@/lib/themes";
 import { playSfx } from "@/lib/sound";
@@ -16,13 +17,26 @@ type Props = {
   themeName: string;
   onChange: (lanes: Lane[]) => void;
   onTest: () => void;
+  hullIndex: number;
+  onHullChange: (index: number) => void;
+  spray: boolean;
+  onSprayChange: (on: boolean) => void;
+  pose: ShipPose | null;
+  onPoseChange: (pose: ShipPose | null) => void;
 };
+
+const poseTabs: { key: ShipPose; label: string }[] = [
+  { key: "idle", label: "عادية" },
+  { key: "cast", label: "رمي الشباك" },
+  { key: "submerged", label: "تحت الماء" },
+  { key: "haul", label: "لم الشباك" },
+];
 
 type Grab = { index: number; kind: "dock" | "fish" };
 
 /** Hidden owner tool: tap the invisible corner, enter 123, then drag each ship's
  *  berth and fishing mark. Publishing stores the layout for every player. */
-export function FleetCalibrator({ lanes, onChange, onTest, themeId, themeName }: Props) {
+export function FleetCalibrator({ lanes, onChange, onTest, themeId, themeName, hullIndex, onHullChange, spray, onSprayChange, pose, onPoseChange }: Props) {
   const [stage, setStage] = useState<"hidden" | "gate" | "open">("hidden");
   const [code, setCode] = useState("");
   const [wrong, setWrong] = useState(false);
@@ -194,6 +208,35 @@ export function FleetCalibrator({ lanes, onChange, onTest, themeId, themeName }:
             />
           </label>
           <span className="calib-note">{lanes[active]?.size ?? 26}%</span>
+        </div>
+        <div className="calib-row calib-hulls">
+          {hulls.map((hull, index) => (
+            <button
+              key={index}
+              type="button"
+              className={`calib-hull ${hullIndex === index ? "calib-hull-active" : ""}`}
+              onClick={() => onHullChange(index)}
+              aria-label={`السفينة ${index + 1}`}
+            >
+              <img src={hull} alt="" draggable={false} />
+              <span>{index + 1}</span>
+            </button>
+          ))}
+        </div>
+        <div className="calib-row">
+          {poseTabs.map((tab) => (
+            <Button
+              key={tab.key}
+              size="sm"
+              variant={pose === tab.key ? "default" : "secondary"}
+              onClick={() => onPoseChange(pose === tab.key ? null : tab.key)}
+            >
+              {tab.label}
+            </Button>
+          ))}
+          <Button size="sm" variant={spray ? "default" : "secondary"} onClick={() => onSprayChange(!spray)}>
+            الرذاذ: {spray ? "مفعّل" : "متوقف"}
+          </Button>
         </div>
         <div className="calib-row">
           <Button size="sm" onClick={onTest}>
