@@ -24,7 +24,7 @@
 - [x] Add a matching partially submerged net state with only the rope and net edge visible
 
 ## Current round (uploaded fleet)
-- [ ] Cut out the 6 uploaded ships and build 4 aligned poses each (idle/cast/submerged/haul)
+- [x] Cut out the 6 uploaded ships and build 4 aligned poses each (idle/cast/submerged/haul)
 - [ ] Delete all old ships/boats from the sea and the catalog
 - [ ] Keep every image as a real local file in the repo (no DB dependency)
 - [ ] Make the hidden calibrator save reliably (this ocean / all oceans)
