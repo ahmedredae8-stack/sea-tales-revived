@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { X } from "lucide-react";
 
-import { starterShip } from "@/lib/fleetCatalog";
+import { hulls, type ShipPose } from "@/lib/fleetCatalog";
 import actSail from "@/assets/actions/act-sail.png.asset.json";
 import actCrew from "@/assets/actions/act-crew.png.asset.json";
 import actSell from "@/assets/actions/act-sell.png.asset.json";
@@ -26,12 +26,14 @@ type ShipStyle = CSSProperties & {
   "--ship-delay": string;
 };
 
-/** One hull on the water — the drawn ship with all four poses. */
-const initialFleet: FleetShip[] = [{ id: 1, state: "docked" }];
-const delays = ["0ms"];
+/** Three hulls of the first boat on the water, each on its own lane. */
+const initialFleet: FleetShip[] = [
+  { id: 1, state: "docked" },
+  { id: 2, state: "docked" },
+  { id: 3, state: "docked" },
+];
+const delays = ["0ms", "420ms", "860ms"];
 
-/** The hull shown on the water today. Poses are drawn over it by ShipNet. */
-const activeHull = starterShip.hull;
 
 
 /** States where the hull sits at the far end of its lane. */
