@@ -49,6 +49,11 @@ export function FishingFleet({ themeId, themeName }: { themeId: string; themeNam
   const [selected, setSelected] = useState<number | null>(null);
   const [crewFor, setCrewFor] = useState<number | null>(null);
   const [sellFor, setSellFor] = useState<number | null>(null);
+  /** Owner tool preview: which of the six hulls to show, poses and spray. */
+  const [hullIndex, setHullIndex] = useState(0);
+  const [spray, setSpray] = useState(true);
+  const [poseOverride, setPoseOverride] = useState<ShipPose | null>(null);
+  const activeHull = hulls[hullIndex] ?? hulls[0]!;
   const timers = useRef<number[]>([]);
 
   useEffect(() => {
