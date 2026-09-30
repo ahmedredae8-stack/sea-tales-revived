@@ -50,7 +50,14 @@ export function TopHud({
     <div className="royal-hud" dir="rtl">
       <div className="royal-row">
         {capsules.map((c) => (
-          <div key={c.key} className={`royal-capsule royal-capsule-${c.tone}`}>
+          <div
+            key={c.key}
+            className={`royal-capsule royal-capsule-${c.tone}`}
+            role="button"
+            tabIndex={0}
+            onClick={() => onTopUp?.(c.key)}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") onTopUp?.(c.key); }}
+          >
             <img className={`royal-icon royal-icon-${c.tone}`} src={c.art} alt="" aria-hidden="true" />
             <span className="royal-value">{c.value}</span>
             <button
