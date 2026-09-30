@@ -209,6 +209,35 @@ export function FleetCalibrator({ lanes, onChange, onTest, themeId, themeName, h
           </label>
           <span className="calib-note">{lanes[active]?.size ?? 26}%</span>
         </div>
+        <div className="calib-row calib-hulls">
+          {hulls.map((hull, index) => (
+            <button
+              key={index}
+              type="button"
+              className={`calib-hull ${hullIndex === index ? "calib-hull-active" : ""}`}
+              onClick={() => onHullChange(index)}
+              aria-label={`السفينة ${index + 1}`}
+            >
+              <img src={hull} alt="" draggable={false} />
+              <span>{index + 1}</span>
+            </button>
+          ))}
+        </div>
+        <div className="calib-row">
+          {poseTabs.map((tab) => (
+            <Button
+              key={tab.key}
+              size="sm"
+              variant={pose === tab.key ? "default" : "secondary"}
+              onClick={() => onPoseChange(pose === tab.key ? null : tab.key)}
+            >
+              {tab.label}
+            </Button>
+          ))}
+          <Button size="sm" variant={spray ? "default" : "secondary"} onClick={() => onSprayChange(!spray)}>
+            الرذاذ: {spray ? "مفعّل" : "متوقف"}
+          </Button>
+        </div>
         <div className="calib-row">
           <Button size="sm" onClick={onTest}>
             تجربة الإبحار
