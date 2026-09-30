@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { hulls, type ShipPose } from "@/lib/fleetCatalog";
 import { defaultLanes, publishLanes, publishLanesEverywhere, type Lane } from "@/lib/fleetLayout";
 import { themes } from "@/lib/themes";
 import { playSfx } from "@/lib/sound";
@@ -35,7 +36,7 @@ type Grab = { index: number; kind: "dock" | "fish" };
 
 /** Hidden owner tool: tap the invisible corner, enter 123, then drag each ship's
  *  berth and fishing mark. Publishing stores the layout for every player. */
-export function FleetCalibrator({ lanes, onChange, onTest, themeId, themeName }: Props) {
+export function FleetCalibrator({ lanes, onChange, onTest, themeId, themeName, hullIndex, onHullChange, spray, onSprayChange, pose, onPoseChange }: Props) {
   const [stage, setStage] = useState<"hidden" | "gate" | "open">("hidden");
   const [code, setCode] = useState("");
   const [wrong, setWrong] = useState(false);
