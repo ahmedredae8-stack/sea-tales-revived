@@ -166,7 +166,12 @@ function Index() {
 
       {/* Top HUD */}
       <div className="absolute inset-x-0 top-0 z-10 px-1 pt-[max(0.35rem,env(safe-area-inset-top))]">
-        <TopHud name={player?.name ?? "قبطان"} onAvatarClick={() => open("settings")} />
+        <TopHud
+          name={player?.name ?? "قبطان"}
+          onAvatarClick={() => open("settings")}
+          onGiftClick={() => setQuestsOpen(true)}
+          onTopUp={() => { playSfx("click", 0.7); setShopOpen(true); }}
+        />
       </div>
 
       {/* Controls */}
