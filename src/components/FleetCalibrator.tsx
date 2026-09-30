@@ -16,7 +16,20 @@ type Props = {
   themeName: string;
   onChange: (lanes: Lane[]) => void;
   onTest: () => void;
+  hullIndex: number;
+  onHullChange: (index: number) => void;
+  spray: boolean;
+  onSprayChange: (on: boolean) => void;
+  pose: ShipPose | null;
+  onPoseChange: (pose: ShipPose | null) => void;
 };
+
+const poseTabs: { key: ShipPose; label: string }[] = [
+  { key: "idle", label: "عادية" },
+  { key: "cast", label: "رمي الشباك" },
+  { key: "submerged", label: "تحت الماء" },
+  { key: "haul", label: "لم الشباك" },
+];
 
 type Grab = { index: number; kind: "dock" | "fish" };
 
