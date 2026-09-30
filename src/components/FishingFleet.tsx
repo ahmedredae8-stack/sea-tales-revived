@@ -122,7 +122,7 @@ export function FishingFleet({ themeId, themeName }: { themeId: string; themeNam
         const lane = lanes[index];
         if (!lane) return null;
         const busy = busyStates.includes(ship.state);
-        const frame = ship.state === "casting" ? "cast" : ship.state === "fishing" ? "submerged" : ship.state === "hauling" ? "haul" : "idle";
+        const frame: ShipPose = poseOverride ?? (ship.state === "casting" ? "cast" : ship.state === "fishing" ? "submerged" : ship.state === "hauling" ? "haul" : "idle");
         const style: ShipStyle = {
           "--ship-x": `${lane.dockX}%`,
           "--ship-y": `${lane.dockY}%`,
@@ -173,7 +173,7 @@ export function FishingFleet({ themeId, themeName }: { themeId: string; themeNam
                     height={640}
                     draggable={false}
                   />
-                  <ShipNet pose={frame} />
+                  <ShipNet pose={frame} spray={spray} />
 
                 </span>
               </span>
@@ -184,7 +184,19 @@ export function FishingFleet({ themeId, themeName }: { themeId: string; themeNam
         );
       })}
 
-      <FleetCalibrator lanes={lanes} onChange={setLanes} onTest={testSail} themeId={themeId} themeName={themeName} />
+      <FleetCalibrator
+        lanes={lanes}
+        onChange={setLanes}
+        onTest={testSail}
+        themeId={themeId}
+        themeName={themeName}
+        hullIndex={hullIndex}
+        onHullChange={setHullIndex}
+        spray={spray}
+        onSprayChange={setSpray}
+        pose={poseOverride}
+        onPoseChange={setPoseOverride}
+      />
 
       {crewFor !== null && <CrewPanel shipId={crewFor} onClose={() => setCrewFor(null)} />}
       {sellFor !== null && (
