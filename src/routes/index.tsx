@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { Moon, Sun } from "lucide-react";
 
 import { IntroLoader } from "@/components/IntroLoader";
-import { BackgroundShop } from "@/components/BackgroundShop";
+import { GameStore } from "@/components/GameStore";
+import { AlertsWindow, EnemiesWindow, InventoryWindow, RankingsWindow } from "@/components/DockWindows";
+import { TribesPage } from "@/routes/tribes";
 import { GameWindow } from "@/components/GameWindow";
 import { TradingFloor } from "@/components/TradingFloor";
 import { TopHud } from "@/components/TopHud";
@@ -56,11 +58,10 @@ export const Route = createFileRoute("/")({
 });
 
 /** Every destination lives as a floating window over the living sea. */
-type Win = "chat" | "settings" | "fish" | "ship" | "trade-fish" | "trade-ship" | null;
+type Win = "chat" | "settings" | "fish" | "ship" | "trade-fish" | "trade-ship" | "stats" | "bag" | "alerts" | "enemies" | "tribe" | null;
 
 function Index() {
   const stageHost = useStageScale();
-  const navigate = useNavigate();
   const { player } = usePlayer();
   const [sound, setSound] = useState(true);
   const [intro, setIntro] = useState(true);
