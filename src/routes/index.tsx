@@ -122,11 +122,11 @@ function Index() {
   const handleDockAction = (action: DockAction) => {
     if (action === "chat") open("chat");
     else if (action === "store") setShopOpen(true);
-    else if (action === "quests") setQuestsOpen(true);
-    else if (action === "tribe") void navigate({ to: "/tribes" });
-    else if (action === "battle") open("ship");
-    else if (action === "bag") open("fish");
-    else open("settings");
+    else if (action === "quests") open("alerts");
+    else if (action === "tribe") open("tribe");
+    else if (action === "battle") open("enemies");
+    else if (action === "bag") open("bag");
+    else open("stats");
   };
 
   return (
@@ -198,7 +198,7 @@ function Index() {
 
       <BottomDock onAction={handleDockAction} />
 
-      {shopOpen && <BackgroundShop activeId={themeId} onSelect={selectTheme} onClose={() => setShopOpen(false)} />}
+       {shopOpen && <GameStore activeId={themeId} onSelect={selectTheme} onClose={() => setShopOpen(false)} />}
 
       {questsOpen && (
         <div className="daily-overlay" role="dialog" aria-label="المهام اليومية">
@@ -223,6 +223,11 @@ function Index() {
           <ChatPage />
         </GameWindow>
       )}
+       {win === "stats" && <GameWindow title="سجل القباطنة" size="lg" onClose={() => setWin(null)}><RankingsWindow /></GameWindow>}
+       {win === "bag" && <GameWindow title="مخزن العتاد" size="lg" onClose={() => setWin(null)}><InventoryWindow player={player} /></GameWindow>}
+       {win === "alerts" && <GameWindow title="التنبيهات" size="lg" onClose={() => setWin(null)}><AlertsWindow /></GameWindow>}
+       {win === "enemies" && <GameWindow title="قائمة الأعداء" size="lg" onClose={() => setWin(null)}><EnemiesWindow /></GameWindow>}
+       {win === "tribe" && <GameWindow title="القبيلة" size="xl" onClose={() => setWin(null)}><TribesPage /></GameWindow>}
       {win === "settings" && (
         <GameWindow title="الإعدادات" size="md" onClose={() => setWin(null)}>
           <SettingsPage />
