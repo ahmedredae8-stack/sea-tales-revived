@@ -51,14 +51,15 @@ export function FleetCalibrator({ lanes, onChange, onTest, themeId, themeName, h
 
   const dragPanel = (event: React.PointerEvent) => {
     const held = panelGrab.current;
-    const box = layer.current?.getBoundingClientRect();
+    const host = layer.current;
+    const box = host?.getBoundingClientRect();
     const pane = panel.current?.getBoundingClientRect();
-    if (!held || held.pointerId !== event.pointerId || !box || !pane) return;
-    const scaleX = box.width / layer.current!.offsetWidth;
-    const scaleY = box.height / layer.current!.offsetHeight;
+    if (!held || held.pointerId !== event.pointerId || !box || !pane || !host) return;
+    const scaleX = box.width / host.offsetWidth;
+    const scaleY = box.height / host.offsetHeight;
     setPanelPosition({
-      x: Math.max(0, Math.min(layer.current!.offsetWidth - pane.width / scaleX, (event.clientX - box.left - held.x) / scaleX)),
-      y: Math.max(0, Math.min(layer.current!.offsetHeight - pane.height / scaleY, (event.clientY - box.top - held.y) / scaleY)),
+      x: Math.max(0, Math.min(host.offsetWidth - pane.width / scaleX, (event.clientX - box.left - held.x) / scaleX)),
+      y: Math.max(0, Math.min(host.offsetHeight - pane.height / scaleY, (event.clientY - box.top - held.y) / scaleY)),
     });
   };
 
@@ -197,7 +198,7 @@ export function FleetCalibrator({ lanes, onChange, onTest, themeId, themeName, h
         </div>
       ))}
 
-       <section className="calib-panel" ref={panel} style={panelPosition ? { left: panelPosition.x, top: panelPosition.y, bottom: "auto" } : undefined}>
+       <section className={panelPosition ? "calib-panel calib-panel-moved" : "calib-panel"} ref={panel} style={panelPosition ? { left: panelPosition.x, top: panelPosition.y, bottom: "auto" } : undefined}>
          <div className="calib-drag-handle"
            onPointerDown={(event) => {
              const rect = panel.current?.getBoundingClientRect();

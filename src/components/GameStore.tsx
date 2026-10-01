@@ -21,23 +21,23 @@ type Product = {
 };
 
 const sectionTitle: Record<StoreTab, string> = {
-  gems: "Gems",
-  crew: "Crew",
-  weapons: "Weapons",
-  armor: "Protection",
-  ships: "Ships",
-  worlds: "Worlds",
+  gems: "الجواهر",
+  crew: "الطواقم",
+  weapons: "الأسلحة",
+  armor: "الدروع",
+  ships: "السفن",
+  worlds: "الخلفيات",
 };
 
 export function GameStore({ activeId, onSelect, onClose }: { activeId: string; onSelect: (id: string) => void; onClose: () => void }) {
-  const [tab, setTab] = useState<StoreTab>("gems");
+  const [tab, setTab] = useState<StoreTab>("ships");
   const tabs = [
     { id: "gems" as const, label: "جواهر", icon: Gem },
     { id: "crew" as const, label: "طواقم", icon: Users },
     { id: "weapons" as const, label: "أسلحة", icon: Swords },
     { id: "armor" as const, label: "حماية", icon: Shield },
     { id: "ships" as const, label: "سفن", icon: ShipWheel },
-    { id: "worlds" as const, label: "عوالم", icon: Crown },
+    { id: "worlds" as const, label: "خلفيات", icon: Crown },
   ];
 
   const products = useMemo<Product[]>(() => {
@@ -110,7 +110,7 @@ function GemPacks() {
             <strong>{fmt(pack.gems)} جوهرة</strong>
             <small>{pack.bonus > 0 ? `+${fmt(pack.bonus)} مكافأة · ` : ""}VIP +{pack.vip}</small>
           </span>
-          <Button onClick={() => playSfx("click", 0.75)} className="product-buy">{pack.price}</Button>
+          <Button disabled className="product-buy" title="الدفع غير متاح حالياً">{pack.price}</Button>
         </li>
       ))}
     </ul>
@@ -143,9 +143,9 @@ function ProductPicker({ items }: { items: Product[] }) {
           <b>{qty}</b>
           <Button variant="ghost" size="icon" aria-label="زيادة" onClick={() => setQty((n) => Math.min(99, n + 1))}><Plus /></Button>
         </span>
-        <Button className="product-buy buy-confirm" onClick={() => playSfx("click", 0.8)}>
+        <Button className="product-buy buy-confirm" disabled title="الشراء غير متاح حالياً">
           <img src={picked.currency === "coin" ? "/__l5e/assets-v1/906f37c0-d530-4e50-a3ce-00deaaf40a02/coin.png" : "/__l5e/assets-v1/81b9318d-8399-478f-bd28-abec7665a1a6/gem.png"} alt="" />
-          {total === 0 ? "مجاني" : fmt(total)}
+          {total === 0 ? "مجاني" : fmt(total)} · غير متاح
         </Button>
       </footer>
     </>
