@@ -2107,3 +2107,90 @@
   .royal-row-lower .royal-tile { width: 52px; }
   .royal-face-art { height: 42px; width: 42px; }
 }
+
+/* Captain identity takes the tall left wing; resources form a compact right bank. */
+.royal-hud {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.18fr);
+  gap: 8px;
+  direction: ltr;
+  align-items: stretch;
+}
+.royal-profile {
+  direction: ltr;
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1fr);
+  gap: 5px;
+  min-width: 0;
+  min-height: 116px;
+}
+.royal-profile .royal-tile,
+.royal-profile .royal-plate { height: 100%; width: 100%; min-height: 116px; border-radius: 7px; }
+.royal-profile .royal-tile { padding: 4px; }
+.royal-profile .royal-face-art { width: 100%; height: 100%; max-height: 108px; object-fit: cover; border-radius: 4px; }
+.royal-profile .royal-plate { direction: rtl; min-width: 0; padding: 4px; }
+.royal-plate-name, .royal-plate-sub { max-width: 100%; overflow-wrap: anywhere; text-align: center; }
+.royal-resources {
+  direction: rtl;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 5px;
+  min-width: 0;
+}
+.royal-resources .royal-capsule { width: 100%; height: 100%; min-height: 0; border-radius: 7px; justify-content: center; padding: 2px 3px; gap: 2px; }
+.royal-resources .royal-capsule::before { border-radius: 4px; }
+.royal-resources .royal-value { flex: 0 1 auto; font-size: 0.72rem; }
+.royal-resources .royal-plus { height: 17px; width: 17px; }
+.royal-resources .royal-plus svg { width: 12px; height: 12px; }
+.royal-resources .royal-icon { width: 22px; height: 22px; }
+.royal-resource-gift { grid-column: 3; grid-row: 2; }
+.royal-resource-gift svg { position: relative; z-index: 2; width: 24px; height: 24px; color: var(--gold); }
+.royal-resources .royal-capsule-fish { grid-column: 2; grid-row: 2; }
+@media (max-width: 500px) {
+  .royal-hud { grid-template-columns: minmax(0, 1fr) minmax(0, 1.22fr); gap: 4px; }
+  .royal-profile, .royal-profile .royal-tile, .royal-profile .royal-plate { min-height: 95px; }
+  .royal-profile .royal-face-art { max-height: 88px; }
+  .royal-resources .royal-capsule { flex-wrap: wrap; align-content: center; }
+  .royal-resources .royal-icon { width: 18px; height: 18px; }
+  .royal-resources .royal-plus { display: none; }
+  .royal-resources .royal-value { font-size: 0.62rem; }
+  .royal-caption { font-size: 0.48rem; }
+}
+
+/* Floating fleet controls — only the title grip drags; sea pins remain independent. */
+.calib-panel { width: min(26rem, calc(100% - 1rem)); max-height: min(65%, 40rem); overflow-y: auto; inset-inline: auto; left: 0.5rem; bottom: 7.5rem; touch-action: pan-y; }
+.calib-panel-moved { right: auto; }
+.calib-drag-handle { display: flex; align-items: center; justify-content: space-between; min-height: 2rem; padding: 0.2rem 0.35rem; margin: -0.2rem -0.2rem 0; border-bottom: 1px solid var(--gold-deep); cursor: grab; touch-action: none; user-select: none; }
+.calib-drag-handle:active { cursor: grabbing; }
+.calib-drag-handle svg { color: var(--gold); }
+
+/* In-world dock windows */
+.win-frame { border-radius: 8px; }
+.win-embed { color: var(--game-ink, oklch(0.94 0.03 85)); }
+.win-embed .social-page, .win-embed .social-wrap { min-height: 0; background: transparent; }
+.win-embed .social-wrap { padding-bottom: 1rem; }
+.win-embed .social-titlebar { display: none; }
+.win-embed .social-page { height: auto; }
+.win-embed .social-wrap { width: 100%; }
+.win-embed > .relative { min-height: 0 !important; height: min(67svh, 38rem) !important; }
+.win-embed > .relative > .relative { height: 100%; }
+.win-embed .mx-auto.flex.h-\[100svh\] { height: 100%; }
+.dock-content { display: flex; flex-direction: column; min-height: 20rem; max-height: min(67svh, 38rem); overflow: auto; padding: 1rem; gap: 1rem; }
+.dock-tabs { display: flex; gap: 0.35rem; padding: 0.55rem; border-bottom: 1px solid var(--gold-deep); overflow-x: auto; flex-shrink: 0; }
+.dock-tabs-wrap { flex-wrap: wrap; }
+.dock-tab { display: inline-flex; flex: 1 0 auto; min-width: 0; height: 2.3rem; padding: 0.4rem 0.55rem; gap: 0.35rem; border: 1px solid var(--gold-deep); border-radius: 4px; background: var(--game-panel, oklch(0.2 0.04 35)); color: var(--gold); font-size: 0.76rem; white-space: nowrap; }
+.dock-tab.active { background: var(--gold-deep); color: var(--primary-foreground); border-color: var(--gold); }
+.dock-section-heading { display: flex; align-items: center; gap: 0.5rem; color: var(--gold); font-size: 1rem; }
+.dock-empty { display: grid; align-content: center; justify-items: center; flex: 1; min-height: 13rem; gap: 0.65rem; padding: 2rem 1rem; text-align: center; color: var(--gold); }
+.dock-empty strong { color: var(--foreground); font-size: 1rem; }
+.dock-empty span { color: var(--muted-foreground); font-size: 0.78rem; }
+.dock-loading { text-align: center; padding: 3rem 0; }
+.ranking-list { display: grid; gap: 0.4rem; }
+.ranking-list li { display: grid; grid-template-columns: 2rem 2.3rem minmax(0, 1fr) auto; align-items: center; gap: 0.6rem; padding: 0.4rem 0.7rem; border: 1px solid var(--gold-deep); border-radius: 4px; background: var(--game-panel, oklch(0.2 0.04 35)); }
+.ranking-list li strong { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ranking-position, .ranking-list li span { color: var(--gold); font-variant-numeric: tabular-nums; }
+.ranking-avatar { width: 2.3rem; height: 2.3rem; border-radius: 4px; }
+.inventory-world { display: grid; grid-template-columns: 7rem minmax(0, 1fr); align-items: center; gap: 1rem; padding: 0.8rem; border: 1px solid var(--gold); border-radius: 4px; }
+.inventory-world img { width: 7rem; aspect-ratio: 1.4; object-fit: cover; border-radius: 3px; }
+.inventory-world div { display: grid; gap: 0.4rem; }.inventory-world strong { color: var(--gold); }.inventory-world span { font-size: 0.75rem; }
+@media (prefers-reduced-motion: reduce) { .win-frame, .win-overlay { animation: none; } }
