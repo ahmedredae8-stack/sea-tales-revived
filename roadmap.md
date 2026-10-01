@@ -1,32 +1,9 @@
 # Roadmap
-- [ ] Restore a fully working game screen after reconnecting the imported backend
-- [ ] Install the seven new dock images and remove the home/duplicate chat controls
-- [ ] Connect the unified store window with worlds, ships, weapons, crews, armor, top-ups, and VIP
-- [ ] Add secure tribe chat and join-request flows
-- [x] Rebuild the shipyard as a three-ship interactive sea scene
-- [x] Run the ship sailing, turning, net-casting, catch, and return sequence over the sea
-- [ ] Fix day/night hydration so the background never jumps on first load
-- [ ] Verify build, phone layouts, interactions, production media, and audio
-- [ ] Polish every fleet window with a cohesive professional game finish
-- [ ] Verify three distinct independent ship paths with smooth, energetic motion
-- [ ] Confirm premium ship artwork remains sharp in every animation state
-- [ ] Regenerate sharper ship art with clean alpha (no white halo around the net)
-- [ ] Replace curved routes with one straight out-and-back lane per ship, never over the island
-- [ ] Mirror the hull (no rotation flip) when turning to face the island and back to the sea
-- [ ] Preload ship frames so no state pops in late
-- [ ] Replace the three floating action icons with bold game-style buttons
-- [ ] Build the full store window: gems, crews, weapons, armor tabs with ship offers
-- [ ] Redraw crew portraits as fierce pirates, not childish art
+- [ ] Make the hidden fleet calibration panel draggable within the sea scene.
+- [ ] Rework all seven dock destinations without changing the dock artwork: chat, rankings, inventory, store, alerts, enemies, tribe.
+- [ ] Rebalance the captain portrait, gift, and resource display in the top bar.
+- [ ] Verify the game at desktop and phone widths, including calibration dragging and dock interactions.
 
-- [x] Install the four matching transparent premium fishing-ship states
-- [x] Add three interactive ships to the main sea scene
-- [x] Add per-ship sail/return, crew, and sell actions
-- [x] Add a matching partially submerged net state with only the rope and net edge visible
-
-## Current round (uploaded fleet)
-- [x] Cut out the 6 uploaded ships and build 4 aligned poses each (idle/cast/submerged/haul)
-- [ ] Delete all old ships/boats from the sea and the catalog
-- [ ] Keep every image as a real local file in the repo (no DB dependency)
-- [ ] Make the hidden calibrator save reliably (this ocean / all oceans)
-- [ ] Align the top bar: avatar, gift and name plate on one height
-- [ ] Give the windows a warm wood-and-gold look instead of black
+## Existing follow-up work
+- [ ] Reconcile legacy ship images in shipyard and trading floor with the six new hulls.
+- [ ] Complete actual purchases, inventory persistence, battle events, and damage/catch rankings when their gameplay and records are available.
