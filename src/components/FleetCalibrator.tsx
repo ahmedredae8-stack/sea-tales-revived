@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Grip } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { hulls, type ShipPose } from "@/lib/fleetCatalog";
@@ -43,7 +44,24 @@ export function FleetCalibrator({ lanes, onChange, onTest, themeId, themeName, h
   const [active, setActive] = useState(0);
   const [status, setStatus] = useState("");
   const layer = useRef<HTMLDivElement>(null);
+  const panel = useRef<HTMLElement>(null);
   const grab = useRef<Grab | null>(null);
+  const panelGrab = useRef<{ pointerId: number; x: number; y: number } | null>(null);
+  const [panelPosition, setPanelPosition] = useState<{ x: number; y: number } | null>(null);
+
+  const dragPanel = (event: React.PointerEvent) => {
+    const held = panelGrab.current;
+    const host = layer.current;
+    const box = host?.getBoundingClientRect();
+    const pane = panel.current?.getBoundingClientRect();
+    if (!held || held.pointerId !== event.pointerId || !box || !pane || !host) return;
+    const scaleX = box.width / host.offsetWidth;
+    const scaleY = box.height / host.offsetHeight;
+    setPanelPosition({
+      x: Math.max(0, Math.min(host.offsetWidth - pane.width / scaleX, (event.clientX - box.left - held.x) / scaleX)),
+      y: Math.max(0, Math.min(host.offsetHeight - pane.height / scaleY, (event.clientY - box.top - held.y) / scaleY)),
+    });
+  };
 
   const move = (event: React.PointerEvent) => {
     const held = grab.current;
@@ -180,8 +198,18 @@ export function FleetCalibrator({ lanes, onChange, onTest, themeId, themeName, h
         </div>
       ))}
 
-      <section className="calib-panel">
-         <h3>معايرة الأسطول · {themeName}</h3>
+       <section className={panelPosition ? "calib-panel calib-panel-moved" : "calib-panel"} ref={panel} style={panelPosition ? { left: panelPosition.x, top: panelPosition.y, bottom: "auto" } : undefined}>
+         <div className="calib-drag-handle"
+           onPointerDown={(event) => {
+             const rect = panel.current?.getBoundingClientRect();
+             if (!rect) return;
+             panelGrab.current = { pointerId: event.pointerId, x: event.clientX - rect.left, y: event.clientY - rect.top };
+             event.currentTarget.setPointerCapture(event.pointerId);
+           }}
+           onPointerMove={dragPanel}
+           onPointerUp={() => { panelGrab.current = null; }}
+           onPointerCancel={() => { panelGrab.current = null; }}
+         ><h3>معايرة الأسطول · {themeName}</h3><Grip size={18} aria-hidden="true" /></div>
         <p className="calib-note">اسحب الدائرة الذهبية لمكان الرسو والزرقاء لمكان الصيد.</p>
         <div className="calib-row">
           {lanes.map((lane, index) => (

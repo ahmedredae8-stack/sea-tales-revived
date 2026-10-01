@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Globe2, Loader2, Menu, Send, Users } from "lucide-react";
+import { ArrowRight, Globe2, Loader2, Menu, Send, Users, Shield } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { NameGate } from "@/components/NameGate";
 import { usePlayer } from "@/hooks/usePlayer";
 import { initials, isOnline, timeLabel, type Message, type Player } from "@/lib/player";
 import { playSfx } from "@/lib/sound";
+import { myMembership } from "@/lib/tribes";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/chat")({
   head: () => ({
@@ -59,10 +61,13 @@ function ChatRoom({ me }: { me: Player }) {
   const [text, setText] = useState("");
   const [sending, setSending] = useState(false);
   const [sidebar, setSidebar] = useState(false);
+  const [section, setSection] = useState<"friends" | "public" | "tribe">("public");
+  const [tribeMember, setTribeMember] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const activeFriend = active === PUBLIC ? null : (friends.find((f) => f.id === active) ?? null);
+  useEffect(() => { void myMembership(me.id).then((membership) => setTribeMember(Boolean(membership))); }, [me.id]);
 
   /* friends list ------------------------------------------------------- */
   const loadFriends = useCallback(async () => {
@@ -102,6 +107,7 @@ function ChatRoom({ me }: { me: Player }) {
   useEffect(() => {
     let cancelled = false;
     setMessages([]);
+    if (section === "tribe") return;
     (async () => {
       let q = supabase.from("messages").select("*").order("created_at", { ascending: true }).limit(200);
       q = active === PUBLIC ? q.is("recipient_id", null) : q.not("recipient_id", "is", null);
@@ -115,7 +121,7 @@ function ChatRoom({ me }: { me: Player }) {
       cancelled = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active, me.id]);
+  }, [active, me.id, section]);
 
   const hydrate = useCallback(
     async (ids: string[]) => {
@@ -141,7 +147,7 @@ function ChatRoom({ me }: { me: Player }) {
     return () => {
       void supabase.removeChannel(channel);
     };
-  }, [belongs, hydrate]);
+  }, [belongs, hydrate, section]);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -243,6 +249,12 @@ function ChatRoom({ me }: { me: Player }) {
 
       {/* Conversation */}
       <section className="flex min-w-0 flex-1 flex-col">
+        <nav className="dock-tabs" aria-label="قنوات الدردشة">
+          {([ ["friends", "الأصدقاء", Users], ["public", "العام", Globe2], ["tribe", "القبيلة", Shield] ] as const).map(([id, label, Icon]) => (
+            <Button key={id} variant="ghost" className={section === id ? "dock-tab active" : "dock-tab"} onClick={() => { setSection(id); if (id === "public") setActive(PUBLIC); if (id === "friends") setSidebar(true); else setSidebar(false); }}><Icon size={16} />{label}</Button>
+          ))}
+        </nav>
+        {section === "tribe" ? <div className="dock-empty"><Shield size={42} /><strong>{tribeMember ? "دردشة القبيلة" : "لم تنضم إلى قبيلة بعد"}</strong><span>{tribeMember ? "قناة القبيلة غير متاحة بعد." : "انضم إلى قبيلة من نافذتها أولاً."}</span></div> : <>
         <header className="flex items-center gap-3 border-b border-white/10 px-4 py-3 backdrop-blur">
           <button
             className="rounded-lg p-2 text-white/70 transition hover:bg-white/10 md:hidden"
@@ -320,6 +332,7 @@ function ChatRoom({ me }: { me: Player }) {
             </button>
           </div>
         </form>
+        </>}
       </section>
     </div>
   );

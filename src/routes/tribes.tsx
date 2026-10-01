@@ -37,7 +37,7 @@ export const Route = createFileRoute("/tribes")({
   component: TribesPage,
 });
 
-function TribesPage() {
+export function TribesPage() {
   const { player } = usePlayer();
   const [tribes, setTribes] = useState<Tribe[]>([]);
   const [mine, setMine] = useState<TribeMember | null>(null);

@@ -1,5 +1,6 @@
 import { CaptainAvatar, nameSeed } from "@/components/GameSprite";
 import { Crown, Gift, Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const coinArt = { url: "/__l5e/assets-v1/906f37c0-d530-4e50-a3ce-00deaaf40a02/coin.png" };
 const gemArt = { url: "/__l5e/assets-v1/81b9318d-8399-478f-bd28-abec7665a1a6/gem.png" };
@@ -48,29 +49,21 @@ export function TopHud({
 
   return (
     <div className="royal-hud" dir="rtl">
-      <div className="royal-row">
+      <div className="royal-resources">
         {capsules.map((c) => (
-          <div
+          <Button variant="ghost"
             key={c.key}
             className={`royal-capsule royal-capsule-${c.tone}`}
-            role="button"
-            tabIndex={0}
+            aria-label={`شحن ${c.label}`}
             onClick={() => onTopUp?.(c.key)}
-            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") onTopUp?.(c.key); }}
           >
             <img className={`royal-icon royal-icon-${c.tone}`} src={c.art} alt="" aria-hidden="true" />
             <span className="royal-value">{c.value}</span>
-            <button
-              type="button"
-              className="royal-plus"
-              aria-label={`شحن ${c.label}`}
-              onClick={() => onTopUp?.(c.key)}
-            >
+            <span className="royal-plus">
               <Plus aria-hidden="true" />
-            </button>
-          </div>
+            </span>
+          </Button>
         ))}
-
         <div className="royal-capsule royal-capsule-fish">
           <img className="royal-icon" src={fishArt.url} alt="" aria-hidden="true" />
           <span className="royal-fish-stack">
@@ -80,19 +73,16 @@ export function TopHud({
             <span className="royal-caption">نوع مستكشف</span>
           </span>
         </div>
+        <Button variant="ghost" className="royal-capsule royal-resource-gift" aria-label="الهدايا" onClick={onGiftClick}><Gift aria-hidden="true" /></Button>
       </div>
 
-      <div className="royal-row royal-row-lower">
-        <button type="button" className="royal-tile royal-gift" aria-label="الهدايا" onClick={onGiftClick}>
-          <Gift aria-hidden="true" />
-        </button>
-
-        <button type="button" className="royal-tile royal-face" aria-label="حساب القبطان" onClick={onAvatarClick}>
+      <div className="royal-profile">
+        <Button variant="ghost" className="royal-tile royal-face" aria-label="حساب القبطان" onClick={onAvatarClick}>
           <CaptainAvatar seed={seed} className="royal-face-art" />
           <span className="royal-face-plus" aria-hidden="true">
             <Plus />
           </span>
-        </button>
+        </Button>
 
         <div className="royal-plate">
           <span className="royal-plate-top">
