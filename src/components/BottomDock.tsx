@@ -12,11 +12,11 @@ export type DockAction = "chat" | "stats" | "bag" | "store" | "quests" | "battle
 
 const items: { id: DockAction; label: string; image: string }[] = [
   { id: "chat", label: "الدردشة", image: dockChat.url },
-  { id: "stats", label: "الإحصائيات", image: dockStats.url },
-  { id: "bag", label: "الحقيبة", image: dockBag.url },
+  { id: "stats", label: "الترتيب", image: dockStats.url },
+  { id: "bag", label: "مخزن العتاد", image: dockBag.url },
   { id: "store", label: "المتجر", image: dockStore.url },
-  { id: "quests", label: "المهام", image: dockQuests.url },
-  { id: "battle", label: "المعركة", image: dockBattle.url },
+  { id: "quests", label: "التنبيهات", image: dockQuests.url },
+  { id: "battle", label: "الأعداء", image: dockBattle.url },
   { id: "tribe", label: "القبيلة", image: dockTribe.url },
 ];
 
