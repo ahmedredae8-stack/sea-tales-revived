@@ -2236,3 +2236,14 @@
 .dock-empty span { color: var(--hud-subtle); }
 .dock-tab.active { color: var(--hud-text); }
 .ranking-list li { color: var(--hud-text); }
+
+.royal-profile .royal-face-art { display: block; min-width: 0; min-height: 0; align-self: stretch; justify-self: stretch; }
+.game-modal { position: absolute; }
+.store-shell { width: min(100%, 34rem); max-height: calc(100% - 1rem); min-height: 0; }
+.store-body { min-height: 0; }
+.store-grid { min-height: 0; }
+.store-product.item-card { width: 100%; min-height: 9.5rem; grid-template-rows: 6rem minmax(0, auto); justify-items: stretch; }
+.store-product.item-card .product-art { width: 100%; height: 6rem; aspect-ratio: auto; overflow: hidden; }
+.store-product.item-card .product-art > * { width: 100%; height: 100%; object-fit: contain; }
+.store-product.item-card .product-copy { width: 100%; align-self: start; }
+.store-product.item-card .product-copy strong { line-height: 1.25; }
