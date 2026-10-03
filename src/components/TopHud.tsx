@@ -49,6 +49,13 @@ export function TopHud({
 
   return (
     <div className="royal-hud" dir="rtl">
+      <div className="royal-profile">
+        <Button variant="ghost" className="royal-tile royal-face" aria-label="حساب القبطان" onClick={onAvatarClick}>
+          <CaptainAvatar seed={seed} className="royal-face-art" />
+          <span className="royal-face-plus" aria-hidden="true"><Plus /></span>
+        </Button>
+      </div>
+      <div className="royal-command">
       <div className="royal-resources">
         {capsules.map((c) => (
           <Button variant="ghost"
@@ -73,17 +80,8 @@ export function TopHud({
             <span className="royal-caption">نوع مستكشف</span>
           </span>
         </div>
-        <Button variant="ghost" className="royal-capsule royal-resource-gift" aria-label="الهدايا" onClick={onGiftClick}><Gift aria-hidden="true" /></Button>
       </div>
-
-      <div className="royal-profile">
-        <Button variant="ghost" className="royal-tile royal-face" aria-label="حساب القبطان" onClick={onAvatarClick}>
-          <CaptainAvatar seed={seed} className="royal-face-art" />
-          <span className="royal-face-plus" aria-hidden="true">
-            <Plus />
-          </span>
-        </Button>
-
+      <div className="royal-identity">
         <div className="royal-plate">
           <span className="royal-plate-top">
             <Crown aria-hidden="true" />
@@ -95,6 +93,8 @@ export function TopHud({
             <i style={{ width: `${Math.round(progress * 100)}%` }} />
           </span>
         </div>
+        <Button variant="ghost" className="royal-capsule royal-resource-gift" aria-label="الهدايا" onClick={onGiftClick}><Gift aria-hidden="true" /></Button>
+      </div>
       </div>
     </div>
   );
