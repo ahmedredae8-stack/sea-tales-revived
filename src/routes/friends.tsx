@@ -3,7 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Check, Loader2, MessageCircle, Search, UserPlus, X } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
-import { NameGate } from "@/components/NameGate";
+import { SignInNotice } from "@/components/SignInNotice";
 import { usePlayer } from "@/hooks/usePlayer";
 import { initials, isOnline, type Friendship, type Player } from "@/lib/player";
 import { playSfx } from "@/lib/sound";
@@ -34,7 +34,7 @@ function FriendsPage() {
             <Loader2 className="h-7 w-7 animate-spin text-[var(--gold)]" />
           </div>
         ) : !player ? (
-          <NameGate onReady={setPlayer} />
+          <SignInNotice />
         ) : (
           <FriendsBoard me={player} />
         )}
