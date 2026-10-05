@@ -23,7 +23,7 @@ export const Route = createFileRoute("/friends")({
 });
 
 function FriendsPage() {
-  const { player, loading, setPlayer } = usePlayer();
+  const { player, loading } = usePlayer();
 
   return (
     <div className="relative min-h-[100svh] bg-[oklch(0.17_0.04_250)] text-white" dir="rtl">

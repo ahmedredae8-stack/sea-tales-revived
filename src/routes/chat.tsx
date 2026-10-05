@@ -27,7 +27,7 @@ export const Route = createFileRoute("/chat")({
 const PUBLIC = "public";
 
 export function ChatPage() {
-  const { player, loading, setPlayer } = usePlayer();
+  const { player, loading } = usePlayer();
 
   if (loading) return <Splash />;
   if (!player) return <Shell><SignInNotice /></Shell>;
