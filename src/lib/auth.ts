@@ -67,11 +67,15 @@ export async function signUpCaptain(username: string, password: string, avatar =
 }
 
 export async function signInCaptain(username: string, password: string): Promise<Result> {
-  const parsed = credentialsSchema.safeParse({ username, password });
+  const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(username.trim());
+  const parsed = isEmail
+    ? z.object({ username: z.string().trim().max(255), password: credentialsSchema.shape.password }).safeParse({ username, password })
+    : credentialsSchema.safeParse({ username, password });
   if (!parsed.success) return { error: parsed.error.issues[0]?.message ?? "بيانات غير صالحة" };
 
-  const norm = normalizeUsername(parsed.data.username);
-  const email = await syntheticEmail(norm);
+  const email = isEmail
+    ? parsed.data.username.trim().toLowerCase()
+    : await syntheticEmail(normalizeUsername(parsed.data.username));
   const { data: auth, error } = await supabase.auth.signInWithPassword({
     email,
     password: parsed.data.password,
