@@ -3,7 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Globe2, Loader2, Menu, Send, Users, Shield } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
-import { NameGate } from "@/components/NameGate";
+import { SignInNotice } from "@/components/SignInNotice";
 import { usePlayer } from "@/hooks/usePlayer";
 import { initials, isOnline, timeLabel, type Message, type Player } from "@/lib/player";
 import { playSfx } from "@/lib/sound";
@@ -27,10 +27,10 @@ export const Route = createFileRoute("/chat")({
 const PUBLIC = "public";
 
 export function ChatPage() {
-  const { player, loading, setPlayer } = usePlayer();
+  const { player, loading } = usePlayer();
 
   if (loading) return <Splash />;
-  if (!player) return <Shell><NameGate onReady={setPlayer} /></Shell>;
+  if (!player) return <Shell><SignInNotice /></Shell>;
   return <Shell><ChatRoom me={player} /></Shell>;
 }
 
