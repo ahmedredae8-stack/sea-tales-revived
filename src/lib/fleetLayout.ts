@@ -61,11 +61,11 @@ function cache(themeId: string, lanes: Lane[]) {
 
 /** The published layout every player sees. */
 export async function fetchLanes(themeId: string): Promise<Lane[]> {
-  const { data, error } = await supabase
+  const { data: rows, error } = await supabase
     .from("fleet_layout")
-    .select("lanes")
-    .eq("id", themeId)
-    .maybeSingle();
+    .select("id, lanes")
+    .in("id", [themeId, "default"]);
+  const data = rows?.find((r) => r.id === themeId) ?? rows?.find((r) => r.id === "default");
   if (error || !data) return cachedLanes(themeId);
   const lanes = normalizeLanes(data.lanes);
   cache(themeId, lanes);

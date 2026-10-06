@@ -43,6 +43,7 @@ export function FleetCalibrator({ lanes, onChange, onTest, themeId, themeName, h
   const [wrong, setWrong] = useState(false);
   const [active, setActive] = useState(0);
   const [status, setStatus] = useState("");
+  const [exported, setExported] = useState("");
   const layer = useRef<HTMLDivElement>(null);
   const panel = useRef<HTMLElement>(null);
   const grab = useRef<Grab | null>(null);
@@ -99,14 +100,14 @@ export function FleetCalibrator({ lanes, onChange, onTest, themeId, themeName, h
   const publish = async () => {
     setStatus("جاري الحفظ…");
     const result = await publishLanes(themeId, lanes);
-    setStatus(result === "cloud" ? `تم الحفظ لمحيط ${themeName} لكل اللاعبين ✔` : `تم الحفظ لمحيط ${themeName} على هذا الجهاز ✔`);
+    setStatus(result === "cloud" ? `تم الحفظ لمحيط ${themeName} لكل اللاعبين ✔` : `حُفظ على جهازك فقط — سجّل دخولك بحساب الأدمن لينشر للجميع`);
     playSfx("click", 0.6);
   };
 
   const publishAll = async () => {
     setStatus("جاري الحفظ لكل المحيطات…");
     const result = await publishLanesEverywhere(themes.map((t) => t.id), lanes);
-    setStatus(result === "cloud" ? "تم الحفظ على كل الخلفيات لكل اللاعبين ✔" : "تم الحفظ على كل الخلفيات على هذا الجهاز ✔");
+    setStatus(result === "cloud" ? "تم الحفظ على كل الخلفيات لكل اللاعبين ✔" : "حُفظ على جهازك فقط — سجّل دخولك بحساب الأدمن لينشر للجميع");
     playSfx("click", 0.6);
   };
 
@@ -276,6 +277,18 @@ export function FleetCalibrator({ lanes, onChange, onTest, themeId, themeName, h
           <Button size="sm" onClick={() => void publishAll()}>
             حفظ لكل المحيطات
           </Button>
+          <Button
+            size="sm"
+            variant="secondary"
+            onClick={() => {
+              const text = JSON.stringify(lanes, null, 2);
+              setExported(text);
+              void navigator.clipboard?.writeText(text).catch(() => undefined);
+              setStatus("تم نسخ الإحداثيات — أرسلها لي لأجعلها افتراضية");
+            }}
+          >
+            نسخ الإحداثيات
+          </Button>
           <Button size="sm" variant="secondary" onClick={() => onChange(defaultLanes)}>
             استرجاع الافتراضي
           </Button>
@@ -284,6 +297,15 @@ export function FleetCalibrator({ lanes, onChange, onTest, themeId, themeName, h
           </Button>
         </div>
         {status && <span className="calib-note">{status}</span>}
+        {exported && (
+          <textarea
+            readOnly
+            dir="ltr"
+            value={exported}
+            onFocus={(e) => e.currentTarget.select()}
+            style={{ width: "100%", height: "7rem", fontSize: 11, fontFamily: "monospace" }}
+          />
+        )}
       </section>
     </div>
   );

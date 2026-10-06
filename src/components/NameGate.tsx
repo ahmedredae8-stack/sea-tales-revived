@@ -86,9 +86,10 @@ export function NameGate({ onReady }: { onReady: (p: Player) => void }) {
           <input
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            maxLength={16}
+            maxLength={mode === "login" ? 255 : 16}
             autoComplete="username"
-            placeholder="اسم القبطان"
+            dir="auto"
+            placeholder={mode === "login" ? "اسم القبطان أو البريد" : "اسم القبطان"}
           />
         </label>
         <label className="auth-field">
