@@ -11,12 +11,12 @@ export type Lane = {
 };
 
 export const defaultLanes: Lane[] = [
-  { id: 1, dockX: 50, dockY: 57, fishX: 74, fishY: 57, size: 26 },
-  { id: 2, dockX: 39, dockY: 68, fishX: 68, fishY: 68, size: 28 },
-  { id: 3, dockX: 41, dockY: 79, fishX: 69, fishY: 79, size: 30 },
+  { id: 1, dockX: 51.1, dockY: 51.2, fishX: 89.8, fishY: 51.8, size: 26 },
+  { id: 2, dockX: 34.1, dockY: 56.5, fishX: 88.9, fishY: 58.7, size: 28 },
+  { id: 3, dockX: 43.9, dockY: 64.9, fishX: 87.4, fishY: 66.7, size: 30 },
 ];
 
-const CACHE_KEY = "ib.fleet.layout.v3";
+const CACHE_KEY = "ib.fleet.layout.v4";
 const cacheKey = (themeId: string) => `${CACHE_KEY}.${themeId}`;
 
 function clamp(value: unknown, min: number, max: number, fallback: number) {
