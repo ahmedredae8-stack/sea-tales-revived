@@ -73,9 +73,12 @@ export async function signInCaptain(username: string, password: string): Promise
     : credentialsSchema.safeParse({ username, password });
   if (!parsed.success) return { error: parsed.error.issues[0]?.message ?? "بيانات غير صالحة" };
 
+  const norm = normalizeUsername(parsed.data.username);
   const email = isEmail
     ? parsed.data.username.trim().toLowerCase()
-    : await syntheticEmail(normalizeUsername(parsed.data.username));
+    : norm === "admin"
+      ? "admin@islandbay.game"
+      : await syntheticEmail(norm);
   const { data: auth, error } = await supabase.auth.signInWithPassword({
     email,
     password: parsed.data.password,
